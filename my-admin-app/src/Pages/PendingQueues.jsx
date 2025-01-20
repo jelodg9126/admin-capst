@@ -17,6 +17,10 @@ import {
   ChevronsRight,
   Mail,
   Phone,
+  ListOrdered,
+  ChartLine,
+  Goal,
+  IdCard,
   Search,
   User,
 } from "lucide-react";
@@ -33,13 +37,17 @@ const columns = [
     cell: (info) => info.getValue(),
     header: () => (
       <span className="flex items-center">
-        <User className="mr-2" size={16} /> Queue ID
+        <ListOrdered className="mr-2" size={18} /> Queue ID
       </span>
     ),
   }),
-  columnHelper.accessor("Contact_Number", {
+  columnHelper.accessor("User_Id", {
     cell: (info) => info.getValue(),
-    header: () => <span>User ID</span>,
+    header: () => (
+      <span className="flex items-center">
+        <IdCard className="mr-2" size={18} /> User ID
+      </span>
+    ),
   }),
   columnHelper.accessor("Name", {
     cell: (info) => info.getValue(),
@@ -51,7 +59,11 @@ const columns = [
   }),
   columnHelper.accessor("Email", {
     cell: (info) => info.getValue(),
-    header: () => <span>Queue Purpose</span>,
+    header: () => (
+      <span className="flex items-center">
+        <Goal className="mr-2" size={16} /> Queue Purpose
+      </span>
+    ),
   }),
   columnHelper.accessor("Verification_Status", {
     cell: (info) => {
@@ -71,7 +83,11 @@ const columns = [
         </span>
       );
     },
-    header: () => <span>Status</span>,
+    header: () => (
+      <span className="flex items-center">
+        <ChartLine className="mr-2" size={16} /> Status
+      </span>
+    ),
   }),
 ];
 
@@ -97,7 +113,7 @@ function PendingQueues(){
             const queue = queuesData[id];
             return {
               CustomUserId: id, // The ID of the queue
-              Contact_Number: queue.UserID, // UserID inside the queue
+              User_Id: queue.UserID, // UserID inside the queue
               Name: queue.Name, // Name inside the queue
               Email: queue.Queue_Purpose, // Queue_Purpose inside the queue
               Verification_Status: queue.Status, // Status inside the queue

@@ -16,7 +16,9 @@ import {
   ChevronsLeft,
   ChevronsRight,
   Mail,
+  IdCard,
   Phone,
+  ChartLine,
   Search,
   User,
 } from "lucide-react";
@@ -33,13 +35,17 @@ const columns = [
     cell: (info) => info.getValue(),
     header: () => (
       <span className="flex items-center">
-        <User className="mr-2" size={16} /> UserID
+        <IdCard className="mr-2" size={18} /> UserID
       </span>
     ),
   }),
   columnHelper.accessor("Contact_Number", {
     cell: (info) => info.getValue(),
-    header: () => <span>Contact Number</span>,
+    header: () => (
+      <span className="flex items-center">
+        <Phone className="mr-2" size={16} /> Contact Number
+      </span>
+    ),
   }),
   columnHelper.accessor("Name", {
     cell: (info) => info.getValue(),
@@ -51,7 +57,11 @@ const columns = [
   }),
   columnHelper.accessor("Email", {
     cell: (info) => info.getValue(),
-    header: () => <span>Email</span>,
+    header: () => (
+      <span className="flex items-center">
+        <Mail className="mr-2" size={16} /> Email
+      </span>
+    ),
   }),
   columnHelper.accessor("Verification_Status", {
     cell: (info) => (
@@ -65,7 +75,11 @@ const columns = [
         {info.getValue()}
       </span>
     ),
-    header: () => <span>Status</span>,
+    header: () => (
+      <span className="flex items-center">
+        <ChartLine className="mr-2" size={16} /> Status
+      </span>
+    ),
   }),
 ];
 

@@ -19,6 +19,10 @@ import {
   ChevronsRight,
   Mail,
   Phone,
+  Goal,
+  ListOrdered,
+  IdCard,
+  ChartLine,
   Search,
   User,
 } from "lucide-react";
@@ -35,7 +39,7 @@ const columns = [
     cell: (info) => info.getValue(),
     header: () => (
       <span className="flex items-center">
-        <User className="mr-2" size={16} /> QueueID
+        <ListOrdered className="mr-2" size={18} /> QueueID
       </span>
     ),
   }),
@@ -43,7 +47,7 @@ const columns = [
     cell: (info) => info.getValue(),
     header: () => (
       <span className="flex items-center">
-        <User className="mr-2" size={16} /> UserID
+        <IdCard className="mr-2" size={18} /> UserID
       </span>
     ),
   }),
@@ -58,12 +62,16 @@ const columns = [
   columnHelper.accessor("Queue_Purpose", {
     cell: (info) => info.getValue(),
     header: () => (
-      <span className="flex items-center"> Purpose </span>
+      <span className="flex items-center"> 
+      <Goal className="mr-2" size={16} /> Purpose
+      </span>
     ),
   }),
   columnHelper.accessor("Status", {
     header: () => (
-      <span className="flex items-center"> Status </span>
+      <span className="flex items-center">
+        <ChartLine className="mr-2" size={16} /> Status 
+         </span>
     ),
     cell: (info) => (
       <span className={`italic text-white p-2 px-3.5 rounded-3xl ${
@@ -328,6 +336,7 @@ function Dashboard(){
           const formattedData = Object.keys(firebaseData).map((id) => {
             const item = firebaseData[id];
             return {
+              QueueID: id,
               UserID: item.UserID,
               Name: item.Name,
               Queue_Purpose: item.Queue_Purpose,
