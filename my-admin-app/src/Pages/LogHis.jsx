@@ -31,6 +31,10 @@ function LogHis({ database }) {
       header: "Time",
       cell: (info) => info.getValue(),
     }),
+    columnHelper.accessor("window", {
+      header: "Window",
+      cell: (info) => info.getValue(),
+    }),
   ];
 
   useEffect(() => {
@@ -49,6 +53,7 @@ function LogHis({ database }) {
             name: entry.name || "---",
             date: entry.date || "---",
             time: entry.time || "---",
+            window: entry.window || "---", // Include the window property
           };
         });
 
