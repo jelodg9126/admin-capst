@@ -11,40 +11,33 @@ function LogAdmin() {
   const [error, setError] = useState('');
 
 
-    const handleLogin = async () => {
-      try {
-        // Reference the "admin" table in your Firebase database
-        const dbRef = ref(database);
-        const snapshot = await get(child(dbRef, "admin"));
+  const handleLogin = async () => {
+    try {
+      // Reference the "mainAdmin" node in your Firebase database
+      const dbRef = ref(database);
+      const snapshot = await get(child(dbRef, "mainAdmin"));
   
-        if (snapshot.exists()) {
-          const admins = snapshot.val();
+      if (snapshot.exists()) {
+        const adminData = snapshot.val();
   
-          // Check if the entered credentials match any stored admin credentials
-          let isValid = false;
-          for (const key in admins) {
-            if (
-              admins[key].Username === username &&
-              admins[key].Password === password
-            ) {
-              isValid = true;
-              break;
-            }
-          }
-  
-          if (isValid) {
-            navigate('/');
-          } else {
-            alert('Invalid credentials. Please try again.');
-          }
+        // Check if entered username and password match the database
+        if (
+          adminData.username === username &&
+          adminData.password === password
+        ) {
+          navigate('dashboard'); // Login successful, navigate to the desired page
         } else {
-          alert('No admin data found in the database.');
+          alert('Invalid credentials. Please try again.');
         }
-      } catch (error) {
-        console.error("Error fetching admin data:", error);
-        alert('An error occurred. Please try again.');
+      } else {
+        alert('No admin data found in the database.');
       }
-    };
+    } catch (error) {
+      console.error("Error fetching admin data:", error);
+      alert('An error occurred. Please try again.');
+    }
+  };
+  
   
   return (
     <div className="log-cont">

@@ -36,10 +36,10 @@ function Window1() {
   const [currentQueueId, setCurrentQueueId] = useState(null);
 
   // Fetch the next queue when component mounts
-  // useEffect(() => {
-  //   fetchNextQueue();
-  //   console.log("rendering")
-  // }, []);
+   useEffect(() => {
+     fetchNextQueue();
+    console.log("rendering")
+   }, []);
 
   // Fetch next queue
   const fetchNextQueue = () => {
@@ -62,7 +62,7 @@ function Window1() {
           const queueRef = ref(db, `queues/${firstEntryKey}`);
           const startTime = new Date().toISOString(); // Using ISO format for StartTime
 
-          update(queueRef, { Status: "Processing", StartTime: startTime })
+          update(queueRef, { Status: "Processing", StartTime: startTime, Window_Received: "Window1"  })
             .then(() => {
               setCurrentQueue(data[firstEntryKey]);
             })
@@ -86,7 +86,7 @@ function Window1() {
         (snapshot) => {
           if (snapshot.exists()) {
             const currentData = snapshot.val();
-            const endTime = new Date().toISOString(); // Using ISO format for CompletedTime
+            const endTime = new Date().toISOString().replace('T', ' ').split('.')[0]; // Date Format
             const startTimeMillis = Date.parse(currentData.StartTime); // Parse StartTime as timestamp
             const endTimeMillis = Date.now(); // Current time in milliseconds
             const processingTimeMillis = endTimeMillis - startTimeMillis;
@@ -108,7 +108,7 @@ function Window1() {
             push(ref(db, "CompletedQueues"), {
               ...currentData,
               Status: "Completed",
-              CompletedTime: endTime,
+              Date_and_Time_Completed: endTime,
               ProcessingTime: readableProcessingTime,
             }).then(() => {
               remove(ref(db, `queues/${currentQueueId}`)).then(() => {
@@ -181,13 +181,49 @@ function Window1() {
     return formattedTime.join(", ");
   };
 
+  const [window1Status, setWindow1Status] = useState("Active");
+
+  // Fetch the initial status of Window1
+  useEffect(() => {
+    const window1Ref = ref(db, "QueueSystemStatus/Window1/Status");
+    onValue(window1Ref, (snapshot) => {
+      const status = snapshot.val();
+      setWindow1Status(status);
+    });
+  }, [db]);
+
+  // Function to handle the button click
+  const handleToggleStatus = () => {
+    const isDisabling = window1Status === "Active";
+    const confirmMessage = isDisabling
+      ? "Are you sure you want to disable Window 1?"
+      : "Do you want to enable Window 1?";
+    const confirmAction = window.confirm(confirmMessage);
+
+    if (confirmAction) {
+      const window1Ref = ref(db, "QueueSystemStatus/Window1");
+      const newStatus = isDisabling ? "Inactive" : "Active";
+
+      update(window1Ref, { Status: newStatus })
+        .then(() => {
+          alert(`Window 1 has been ${newStatus === "Inactive" ? "disabled" : "enabled"}.`);
+        })
+        .catch((error) => {
+          console.error("Error updating status:", error);
+          alert(`Failed to update Window 1 status. Please try again.`);
+        });
+    }
+  };
+
   return (
     <>
       <Sidebar />
     <div className="win1-container">
         <div className="win-headz">
           <h2 className="win-title">FINANCE WINDOW 1</h2>
-          <button className="disable">Disable</button>
+          <button className="disable" onClick={handleToggleStatus}>
+        {window1Status === "Active" ? "Disable" : "Enable"}
+      </button>
         </div>
 
        <hr/>
