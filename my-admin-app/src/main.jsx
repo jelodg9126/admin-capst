@@ -1,7 +1,8 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'; // Tailwind CSS
-import './App.css';   // Vanilla CSS
+import './index.css'; 
+import './App.css';  
+import './components/win-container.css'
 import './components/sidebar.css'
 import './components/window1.css'
 import './components/dashboard.css'

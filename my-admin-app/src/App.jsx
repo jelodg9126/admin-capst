@@ -13,6 +13,7 @@ import WindowAd3 from '../../../Win3/admin-capst/my-admin-app/src/Pages/WindowAd
 import Users from './Pages/Users';
 import AddAccount from './Pages/AddAccount';
 import Wins from './Pages/Wins';
+import PendingQueues from './Pages/PendingQueues';
 
 
 
@@ -24,7 +25,7 @@ function App() {
     <>
     <div className="app-container">
       <Routes>
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Dashboard />} />
         <Route path="/dashboard1" element={<Dashboard1 />} />
         <Route path="/dashboard2" element={<Dashboard2 />} />
         <Route path="/dashboard3" element={<Dashboard3 />} />
@@ -37,7 +38,8 @@ function App() {
         <Route path="/winad3" element={<WindowAd3/>} />
         <Route path="/users" element={<Users />} />
         <Route path="/acc" element={<AddAccount />} />
-        <Route path="/" element={<Wins/>} /> 
+        <Route path="/win" element={<Wins/>} />
+        <Route path="/pqs" element={<PendingQueues/>} />
 
       </Routes>
     </div>

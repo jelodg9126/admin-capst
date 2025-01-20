@@ -54,23 +54,29 @@ const columns = [
     header: () => <span>Email</span>,
   }),
   columnHelper.accessor("Verification_Status", {
-    cell: (info) => (
-      <span
-        className={`italic text-white p-2 px-3.5 rounded-3xl ${
-          info.getValue() === "Verified"
-            ? "bg-green-600"
-            : "bg-red-600"
-        }`}
-      >
-        {info.getValue()}
-      </span>
-    ),
+    cell: (info) => {
+      const status = info.getValue();
+      const bgColor =
+        status === "Processing"
+          ? "bg-orange-600"
+          : status === "Pending"
+          ? "bg-gray-600"
+          : "bg-green-600";
+
+      return (
+        <span
+          className={`italic text-white p-2 px-3.5 rounded-3xl ${bgColor}`}
+        >
+          {status}
+        </span>
+      );
+    },
     header: () => <span>Status</span>,
   }),
 ];
 
 
-function Users(){
+function PendingQueues(){
 
   const [data, setData] = useState([]);
   const [sorting, setSorting] = React.useState([]);
@@ -82,18 +88,21 @@ function Users(){
     });
 
     useEffect(() => {
-      // Listen for real-time data updates
-      const dbRef = ref(database, "users");
+      // Listen for real-time data updates from "queues"
+      const dbRef = ref(database, "queues");
       const unsubscribe = onValue(dbRef, (snapshot) => {
         if (snapshot.exists()) {
-          const usersData = snapshot.val();
-          const formattedData = Object.values(usersData).map((user) => ({
-            CustomUserId: user.CustomUserId,
-            Contact_Number: user.Contact_Number,
-            Name: user.Name,
-            Email: user.Email,
-            Verification_Status: user.Verification_Status,
-          }));
+          const queuesData = snapshot.val();
+          const formattedData = Object.keys(queuesData).map((id) => {
+            const queue = queuesData[id];
+            return {
+              CustomUserId: id, // The ID of the queue
+              Contact_Number: queue.UserID, // UserID inside the queue
+              Name: queue.Name, // Name inside the queue
+              Email: queue.Queue_Purpose, // Queue_Purpose inside the queue
+              Verification_Status: queue.Status, // Status inside the queue
+            };
+          });
           setData(formattedData); // Update the state with the new data
         } else {
           console.log("No data available");
@@ -271,4 +280,4 @@ function Users(){
     )
 }
 
-export default Users
+export default PendingQueues
