@@ -18,7 +18,7 @@
   flex-direction: column;
 }
 
-.title{
+.sidebar-logo{
   display: flex;
   align-items: center;
   padding: 15px;
@@ -30,12 +30,37 @@
    margin-bottom: 1rem;
 }
 
+.sidebar-logo2{
+  display: none;
+  align-items: center;
+  padding: 15px;
+  font-family: 'inter',sans-serif;
+  font-style: italic;
+  font-weight: 180;
+  font-size: 2rem;
+  color: #1C2E8B;
+   margin-bottom: 1rem;
+}
+
+
+
+.sidebar-header1, .sidebar-header2{
+  padding: 12px;
+  font-family: 'nobile', sans-serif;
+  font-size: 12px;
+  color: rgb(124, 124, 124);
+  font-weight: 500;
+}
+
+.sidebar-header2{
+  margin-top: 1rem;
+}
 
 .pages a{
   display: flex;
   align-items: center;
   text-align: center;
-  gap: 2px;
+  gap: 10px;
   padding: 10px;
   color: rgb(92, 92, 92);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -57,13 +82,6 @@
   border-radius: 12px;
 }
 
-.winn-header{
-  padding: 12px;
-  font-family: 'nobile', sans-serif;
-  font-size: 14px;
-  color: rgb(124, 124, 124);
-  font-weight: 500;
-}
 
 .home-icon{
   padding: 6px 8px;
@@ -75,7 +93,7 @@
   font-size: 1.3rem;
 }
 
-.dash{
+.sidebar-label{
   display: flex;
   align-items: center;
   text-align: center;
@@ -89,7 +107,7 @@
 .win-header{
   padding: 12px;
   font-family: 'nobile', sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   color: rgb(124, 124, 124);
   font-weight: 500;
   margin-top: 4rem;
@@ -108,7 +126,6 @@
 
 .one{
   border: 1px solid;
-  padding: 6px 9px;
   border-radius: 7px;
   background-color:rgb(133, 133, 133);
   color: aliceblue;
@@ -122,5 +139,48 @@
   align-self: flex-end;
 }
 
+@media only screen and (max-width: 1145px) {
+}
 
+
+@media only screen and (max-width: 1024px) {
+  .sidebar-container{
+    max-width: 90px;         
+    width: auto !important;   
+    width:90px; 
+  }
+  .sidebar-label {
+ display: none;
+  }
+  
+  .sidebar-logo{
+    display: none;
+  }
+
+  .sidebar-logo2{
+    display: flex;
+  }
+
+  .sidebar-header1, .sidebar-header2{
+   padding: 4px 0px;
+   text-align: center;
+  }
+
+  .sidebar-header2{
+    margin-top: 1.5rem;
+  }
+
+  .sidebar-icons{
+    margin-top: 7px;
+  }
+
+  .sidebar-link.active{
+    padding: 12px 10px 10px;
+  }
+}
+
+  @media only screen and (max-width: 768px) {
+    
+    
+}
 

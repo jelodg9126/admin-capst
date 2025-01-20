@@ -48,10 +48,8 @@
 .visit-card{
     border: 1px solid #c7c7c7;
     border-radius: 10px;
-    padding:15px 20px 20px;
+    padding:23.5px 30px 20px;
     background-color: rgb(255, 255, 255);
-    width: 13rem;
-    height: 8rem;
 }
 
 .visit-header{
@@ -113,7 +111,25 @@ td{
 }
 
 
+@media only screen and (max-width: 1024px) {
+    .d-container{
+        width: 90%;
+    }
+}
 
+@media only screen and (max-width: 955px) {
+    .sidebar-container{
+      width: 10%;
+    }
+    .dash {
+   display: none;
+    }
+
+    .d-container{
+        width: 90%;
+    }
+  
+  }
 
 
 

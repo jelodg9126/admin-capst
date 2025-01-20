@@ -105,7 +105,7 @@ function Users(){
     return(
         <>
       <Sidebar/>
-      <div className ="d-container">
+      <div className ="win-container">
           <div className="flex flex-col min-h-full max-xl:-4xl py-12 px-4 sm:px-6 lg:px-8">
                <div className="mb-4 relative">
                  <input

@@ -36,10 +36,10 @@ function Window1() {
   const [currentQueueId, setCurrentQueueId] = useState(null);
 
   // Fetch the next queue when component mounts
-  useEffect(() => {
-    fetchNextQueue();
-    console.log("rendering")
-  }, []);
+  // useEffect(() => {
+  //   fetchNextQueue();
+  //   console.log("rendering")
+  // }, []);
 
   // Fetch next queue
   const fetchNextQueue = () => {
@@ -184,11 +184,16 @@ function Window1() {
   return (
     <>
       <Sidebar />
-      <div className="win-container">
-        <div className="card">
-          <h2 className="win-heading">FINANCE WINDOW 1</h2>
+    <div className="win1-container">
+        <div className="win-headz">
+          <h2 className="win-title">FINANCE WINDOW 1</h2>
+          <button className="disable">Disable</button>
+        </div>
+
+       <hr/>
+       
           <div className="user-container">
-            <div className="user-info">
+            <div className="userInfo-card">
               <h3 className="uid">User ID: {currentQueue?.UserID || "N/A"}</h3>
               <h3 className="name">Name: {currentQueue?.Name || "N/A"}</h3>
               <h3 className="email">Email: {currentQueue?.Email || "N/A"}</h3>
@@ -196,17 +201,24 @@ function Window1() {
               <h3 className="purpose">Purpose: {currentQueue?.Queue_Purpose || "N/A"}</h3>
             </div>
           </div>
-          <div className="queue-container">
-            <h2 className="now-serving">Current Queue:</h2>
+          
+      <div className="queue-container">
+        <div className="q-wrapper">
+          <div className="queue-card">
+            <h2 className="current-queue">Current Queue:</h2>
              <h2 className="q-num">  {currentQueue?.Queue_Number || "N/A"}</h2>
           </div>
-          <div className="button-cont">
+        </div>
+
+          <div className="qBtn-container">
             <button className="cancel" onClick={cancelCurrentQueue}>Cancel</button>
             <button className="recall">Recall</button>
             <button className="next" onClick={completeCurrentQueue}>Next Queue</button>
-          </div>
+          </div>         
         </div>
-      </div>
+
+    </div> 
+ 
     </>
   );
 }

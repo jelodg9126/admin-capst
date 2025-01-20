@@ -67,7 +67,6 @@ const columns = [
 
 defaults.maintainAspectRatio = false;
 defaults.responsive = true;
-
 defaults.plugins.title.display = true;
 defaults.plugins.title.align = "start";
 defaults.plugins.title.font.size = 20;
@@ -108,24 +107,24 @@ function Dashboard(){
     return(
    <>
      <Sidebar/>
-     <div className="d-container">
-      <div className="d-heading">
+  <div className="d-container">
+        <div className="d-heading">
          <h4>Welcome, Admin Window 1!</h4>
          <h5 className="dash-date">Mon, December 9, 2024</h5>
-            <hr className="line"/>
-      </div>
+         <hr className="line"/>
+        </div>
+
      <div className="d-content">
       <div className="topdiv">
      <div className="visit-wrapper">
       <div className="visit-card">
          <h3 className="visit-header">Visitors Today</h3>
-         <button className="div">--</button>
          <h1 className="visitor-count">20</h1>
        </div>
 
        <div className="visit-card">
-         <h3 className="visit-header">This Month</h3>
-         <h1 className="mos-visitor">139</h1>
+         <h3 className="visit-header">Avg Serving Time</h3>
+         <h1 className="mos-visitor">12 mins</h1>
       </div>
       </div>
       
