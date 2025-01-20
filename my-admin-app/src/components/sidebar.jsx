@@ -51,6 +51,9 @@ return(
         <CustomLink className='sidebar-link' href ="/acc" >
         <UserPlus size={22} className='sidebar-icons' />
         <span className='sidebar-label'> Add Account </span></CustomLink>
+        <CustomLink className='sidebar-link' href ="/LogHis" >
+        <UserPlus size={22} className='sidebar-icons' />
+        <span className='sidebar-label'> Login History </span></CustomLink>
 
       </div>
 

@@ -14,6 +14,8 @@ import Users from './Pages/Users';
 import AddAccount from './Pages/AddAccount';
 import Wins from './Pages/Wins';
 import PendingQueues from './Pages/PendingQueues';
+import LogHis from './Pages/LogHis';
+import { database } from './firebase.config'; 
 import Login from './Pages/Login';
 
 
@@ -33,6 +35,7 @@ function App() {
         <Route path="/log1" element={<LogAdmin1 />} />
         <Route path="/log2" element={<LogAdmin2 />} />
         <Route path="/log3" element={<LogAdmin3 />} /> 
+        <Route path="/logHis" element={<LogHis database={database} />} />
         <Route path="/win1" element={<Window1/>} />
         <Route path="/winad1" element={<WindowAd1/>} />
         <Route path="/winad2" element={<WindowAd2/>} />
