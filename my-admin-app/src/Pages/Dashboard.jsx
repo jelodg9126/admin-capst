@@ -31,6 +31,14 @@ import { ref, get, child, set, query, orderByChild, equalTo, update, onValue } f
 const columnHelper = createColumnHelper();
 
 const columns = [
+  columnHelper.accessor("QueueID", {
+    cell: (info) => info.getValue(),
+    header: () => (
+      <span className="flex items-center">
+        <User className="mr-2" size={16} /> QueueID
+      </span>
+    ),
+  }),
   columnHelper.accessor("UserID", {
     cell: (info) => info.getValue(),
     header: () => (
@@ -381,12 +389,14 @@ function Dashboard(){
          </div>
             <div className="time">{time}</div>
       </div>
+       <hr/>
      <div className="d-content">
       <div className="topdiv">
      <div className="visit-wrapper">
       <div className="visit-card">
          <h3 className="visit-header">Visitors Today</h3>
          <h1 className="visitor-count">{visitorCount}</h1>
+
          <button className="btnResetDaily" onClick={handleResetDaily}>
                   Reset Daily
                 </button>

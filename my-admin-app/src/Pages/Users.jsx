@@ -33,13 +33,13 @@ const columns = [
     cell: (info) => info.getValue(),
     header: () => (
       <span className="flex items-center">
-        <User className="mr-2" size={16} /> ID
+        <User className="mr-2" size={16} /> UserID
       </span>
     ),
   }),
   columnHelper.accessor("Contact_Number", {
     cell: (info) => info.getValue(),
-    header: () => <span>Student Number</span>,
+    header: () => <span>Contact Number</span>,
   }),
   columnHelper.accessor("Name", {
     cell: (info) => info.getValue(),

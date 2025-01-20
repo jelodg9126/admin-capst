@@ -33,13 +33,13 @@ const columns = [
     cell: (info) => info.getValue(),
     header: () => (
       <span className="flex items-center">
-        <User className="mr-2" size={16} /> ID
+        <User className="mr-2" size={16} /> Queue ID
       </span>
     ),
   }),
   columnHelper.accessor("Contact_Number", {
     cell: (info) => info.getValue(),
-    header: () => <span>Student Number</span>,
+    header: () => <span>User ID</span>,
   }),
   columnHelper.accessor("Name", {
     cell: (info) => info.getValue(),
@@ -51,7 +51,7 @@ const columns = [
   }),
   columnHelper.accessor("Email", {
     cell: (info) => info.getValue(),
-    header: () => <span>Email</span>,
+    header: () => <span>Queue Purpose</span>,
   }),
   columnHelper.accessor("Verification_Status", {
     cell: (info) => {
@@ -142,6 +142,9 @@ function PendingQueues(){
         <>
       <Sidebar/>
       <div className ="d-container">
+        <div className="p-7 border border-solid">
+      <h2 className= "">User</h2>
+      </div>
           <div className="flex flex-col min-h-full max-xl:-4xl py-12 px-4 sm:px-6 lg:px-8">
                <div className="mb-4 relative">
                  <input
