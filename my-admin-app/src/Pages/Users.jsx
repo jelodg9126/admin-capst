@@ -6,6 +6,7 @@ import {
   getCoreRowModel,
   getFilteredRowModel,
   getSortedRowModel,
+  getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import {
@@ -19,14 +20,16 @@ import {
   Search,
   User,
 } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { database } from '../firebase.config';
+import { ref, get, child, onValue } from "firebase/database";
 
 
 
 const columnHelper = createColumnHelper();
 
 const columns = [
-  columnHelper.accessor("id", {
+  columnHelper.accessor("CustomUserId", {
     cell: (info) => info.getValue(),
     header: () => (
       <span className="flex items-center">
@@ -34,17 +37,11 @@ const columns = [
       </span>
     ),
   }),
-
-  columnHelper.accessor("studentno", {
+  columnHelper.accessor("Contact_Number", {
     cell: (info) => info.getValue(),
-    header: () => (
-      <span className="flex items-center">
-         Student Number
-      </span>
-    ),
+    header: () => <span>Student Number</span>,
   }),
-
-  columnHelper.accessor("name", {
+  columnHelper.accessor("Name", {
     cell: (info) => info.getValue(),
     header: () => (
       <span className="flex items-center">
@@ -52,53 +49,92 @@ const columns = [
       </span>
     ),
   }),
-  columnHelper.accessor("email", {
-    id: "email",
-    cell: (info) => (
-      info.getValue()
-    ),
-    header: () => (
-      <span className="flex items-center"> Email </span>
-    ),
+  columnHelper.accessor("Email", {
+    cell: (info) => info.getValue(),
+    header: () => <span>Email</span>,
   }),
-  columnHelper.accessor("status", {
-    header: () => (
-      <span className="flex items-center"> Status </span>
-    ),
-    cell: (info) =><span className="italic text-white bg-green-600 p-2 px-3.5 rounded-3xl "> {info.getValue()}</span>
+  columnHelper.accessor("Verification_Status", {
+    cell: (info) => {
+      const status = info.getValue();
+      const bgColor =
+        status === "Processing"
+          ? "bg-orange-600"
+          : status === "Pending"
+          ? "bg-gray-600"
+          : "bg-green-600";
+
+      return (
+        <span
+          className={`italic text-white p-2 px-3.5 rounded-3xl ${bgColor}`}
+        >
+          {status}
+        </span>
+      );
+    },
+    header: () => <span>Status</span>,
   }),
 ];
 
 
 function Users(){
 
-  const [data] = React.useState(() => [...regUserData]);
+  const [data, setData] = useState([]);
   const [sorting, setSorting] = React.useState([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
 
+  const [pagination, setPagination] = React.useState({
+      pageIndex: 0,
+      pageSize: 5,
+    });
+
+    useEffect(() => {
+      // Listen for real-time data updates from "queues"
+      const dbRef = ref(database, "queues");
+      const unsubscribe = onValue(dbRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const queuesData = snapshot.val();
+          const formattedData = Object.keys(queuesData).map((id) => {
+            const queue = queuesData[id];
+            return {
+              CustomUserId: id, // The ID of the queue
+              Contact_Number: queue.UserID, // UserID inside the queue
+              Name: queue.Name, // Name inside the queue
+              Email: queue.Queue_Purpose, // Queue_Purpose inside the queue
+              Verification_Status: queue.Status, // Status inside the queue
+            };
+          });
+          setData(formattedData); // Update the state with the new data
+        } else {
+          console.log("No data available");
+        }
+      });
+  
+      // Cleanup the listener when the component unmounts
+      return () => unsubscribe();
+    }, []);
+
   const table = useReactTable({
-    data,
-    columns,
-    state: {
-      sorting,
-      globalFilter,
-    },
-
-    initialState: {
-      pagination: {
-        pageSize: 5,
-        pageIndex: 0,
+      data,
+      columns,
+      state: {
+        sorting,
+        globalFilter,
+        pagination, // Use the pagination state here
       },
-    },
-    getCoreRowModel: getCoreRowModel(),
-
-    onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
-
-    onGlobalFilterChange: setGlobalFilter,
-    getFilteredRowModel: getFilteredRowModel(),
-    
-  });
+      initialState: {
+        pagination: {
+          pageSize: 5,
+          pageIndex: 0,
+        },
+      },
+      onSortingChange: setSorting,
+      onGlobalFilterChange: setGlobalFilter,
+      onPaginationChange: setPagination, // Update pagination handler
+      getCoreRowModel: getCoreRowModel(),
+      getSortedRowModel: getSortedRowModel(),
+      getFilteredRowModel: getFilteredRowModel(),
+      getPaginationRowModel: getPaginationRowModel(),
+    });
 
   console.log(table.getRowModel());
 
@@ -150,7 +186,7 @@ function Users(){
                      ))}
                    </thead>
                    <tbody className="bg-white divide-y divide-gray-200">
-                     {table.getRowModel().rows.map((row) => (
+                     {table.getPaginationRowModel().rows.map((row) => (
                        <tr key={row.id} className="hover:bg-gray-100 cursor-pointer">
                          {row.getVisibleCells().map((cell) => (
                            <td

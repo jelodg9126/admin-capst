@@ -15,10 +15,12 @@ function Wins() {
           <button className="btn-1" onClick={() => navigate('/log1')}> 
             Window 1
           </button>
-          <button className="btn-1" onClick={() => navigate('/log2')}> 
+          <button className="btn-2" onClick={() => navigate('/log2')}> 
             Window 2
           </button>
-          <button className="btn-3">Window 3</button>
+          <button className="btn-3" onClick={() => navigate('/log3')}> 
+            Window 3
+          </button>
         </div>
       </div>
     </>
