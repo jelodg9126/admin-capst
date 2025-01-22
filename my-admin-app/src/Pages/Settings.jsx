@@ -94,7 +94,7 @@ function Settings(){
         });
       }
 
-      const resetDaily = window.confirm('Are you sure you want to reset?')
+      const resetDaily = window.confirm('Reset Daily Queue Number Counter? Current Queue Number Counter will be saved to Daily Queue Record.')
       if(!resetDaily){
       return;
       }
@@ -137,7 +137,7 @@ function Settings(){
       if (counterSnapshot.exists()) {
         const counterValue = counterSnapshot.val(); // Get the counter value
         
-        const confirmReset = window.confirm(" Are you sure that you want to reset? This may affect current record ")
+        const confirmReset = window.confirm("Reset Monthly Queue Number Counter? Current Queue Number Counter will be saved to Monthly Queue Record.")
          if (!confirmReset){
             return;
          }
@@ -163,76 +163,143 @@ function Settings(){
   };
 
   const [window1Status, setWindow1Status] = useState("Active");
-  
-    // Fetch the initial status of Window1
-    useEffect(() => {
-      const window1Ref = ref(db, "QueueSystemStatus/Window1/Status");
-      onValue(window1Ref, (snapshot) => {
-        const status = snapshot.val();
-        setWindow1Status(status);
-      });
-    }, [db]);
-  
+  const [window2Status, setWindow2Status] = useState("Active");
+  const [window3Status, setWindow3Status] = useState("Active");
+  const [systemStatus, setSystemStatus] = useState("Active");
 
-   // Function to handle the button click
-    const handleToggleStatus = () => {
-      const isDisabling = window1Status === "Active";
-      const confirmMessage = isDisabling
-        ? "Are you sure you want to disable Window 1?"
-        : "Do you want to enable Window 1?";
-      const confirmAction = window.confirm(confirmMessage);
+  // Fetch the initial status of the system
+  useEffect(() => {
+    const systemRef = ref(db, "QueueSystemStatus/Status");
+    onValue(systemRef, (snapshot) => {
+      const status = snapshot.val();
+      setSystemStatus(status);
+    });
+  }, [db]);
+
+  // Fetch the initial status of Window1
+  useEffect(() => {
+    const window1Ref = ref(db, "QueueSystemStatus/Window1/Status");
+    onValue(window1Ref, (snapshot) => {
+      const status = snapshot.val();
+      setWindow1Status(status);
+    });
+  }, [db]);
+
+  // Fetch the initial status of Window2
+  useEffect(() => {
+    const window2Ref = ref(db, "QueueSystemStatus/Window2/Status");
+    onValue(window2Ref, (snapshot) => {
+      const status = snapshot.val();
+      setWindow2Status(status);
+    });
+  }, [db]);
+
+  // Fetch the initial status of Window3
+  useEffect(() => {
+    const window3Ref = ref(db, "QueueSystemStatus/Window3/Status");
+    onValue(window3Ref, (snapshot) => {
+      const status = snapshot.val();
+      setWindow3Status(status);
+    });
+  }, [db]);
+
+  // Function to handle button clicks for toggling statuses
+  const handleToggleStatus = (windowName, currentStatus, setStatus) => {
+    const isDisabling = currentStatus === "Active";
+    const confirmMessage = isDisabling
+      ? `Are you sure you want to disable ${windowName}?`
+      : `Do you want to enable ${windowName}?`;
+    const confirmAction = window.confirm(confirmMessage);
   
-      if (confirmAction) {
-        const window1Ref = ref(db, "QueueSystemStatus/Window1");
-        const newStatus = isDisabling ? "Inactive" : "Active";
-       
+    if (confirmAction) {
+      const windowRef = ref(db, `QueueSystemStatus/${windowName}`);
+      const newStatus = isDisabling ? "Inactive" : "Active";
   
-        update(window1Ref, { Status: newStatus })
-          .then(() => {
-            alert(`Window 1 has been ${newStatus === "Inactive" ? "disabled" : "enabled"}.`);
-          })
-          .catch((error) => {
-            console.error("Error updating status:", error);
-            alert(`Failed to update Window 1 status. Please try again.`);
-          });
-      }
-    };
+      update(windowRef, { Status: newStatus })
+        .then(() => {
+          alert(`${windowName} has been ${newStatus === "Inactive" ? "disabled" : "enabled"}.`);
+          setStatus(newStatus);
+        })
+        .catch((error) => {
+          console.error(`Error updating ${windowName} status:`, error);
+          alert(`Failed to update ${windowName} status. Please try again.`);
+        });
+    }
+  };
+
+  const handleToggleSystemStatus = () => {
+    const isDisabling = systemStatus === "Active";
+    const confirmMessage = isDisabling
+      ? "Are you sure you want to disable the entire system? This will shut down the whole finance system."
+      : "Do you want to enable the system again?";
+    const confirmAction = window.confirm(confirmMessage);
+  
+    if (confirmAction) {
+      const systemRef = ref(db, "QueueSystemStatus/Status");
+      const newStatus = isDisabling ? "Inactive" : "Active";
+  
+      set(systemRef, newStatus)
+        .then(() => {
+          alert(`The system has been ${newStatus === "Inactive" ? "disabled" : "enabled"}.`);
+          setSystemStatus(newStatus);
+        })
+        .catch((error) => {
+          console.error("Error updating system status:", error);
+          alert("Failed to update system status. Please try again.");
+        });
+    }
+  };
   
 
     return(
      <>
-     <Sidebar/>
-     <div className="Swin-container">
-
-     <div className="settings-headCont">
-        <div className="name">
-          <h4 className="settings-header">Settings</h4>
+     <Sidebar />
+      <div className="Swin-container">
+        <div className="settings-headCont">
+          <div className="name">
+            <h4 className="settings-header">Settings</h4>
+          </div>
         </div>
-     </div>
-     <hr/>
+        <hr />
 
-      <div className="Fin-section">Finance Window</div>
-  <div className="settings-container">
+        <div className="Fin-section">Finance Window</div>
+        <div className="settings-container">
+          <div className="finCard-wrapper">
+            <div className="fin-card1">
+              <h2 className="finCard-title">Finance Window 1</h2>
+              <button
+                className="disable"
+                onClick={() =>
+                  handleToggleStatus("Window1", window1Status, setWindow1Status)
+                }
+              >
+                {window1Status === "Active" ? "Disable" : "Enable"}
+              </button>
+            </div>
 
-    <div className="finCard-wrapper">
+            <div className="fin-card1">
+              <h2 className="finCard-title">Finance Window 2</h2>
+              <button
+                className="disable"
+                onClick={() =>
+                  handleToggleStatus("Window2", window2Status, setWindow2Status)
+                }
+              >
+                {window2Status === "Active" ? "Disable" : "Enable"}
+              </button>
+            </div>
 
-        <div className="fin-card1">
-          <h2 className="finCard-title">Finance Window 1</h2>
-          <button className="disable" onClick={handleToggleStatus}>
-          {window1Status === "Active" ? "Disable" : "Enable"} </button>
-        </div>
-
-        <div className="fin-card1">
-          <h2 className="finCard-title">Finance Window 2</h2>
-          <button className="disable" onClick={handleToggleStatus}>
-          {window1Status === "Active" ? "Disable" : "Enable"} </button>
-        </div>
-
-        <div className="fin-card1">
-          <h2 className="finCard-title">Finance Window 3</h2>
-          <button className="disable" onClick={handleToggleStatus}>
-          {window1Status === "Active" ? "Disable" : "Enable"} </button>
-        </div>
+            <div className="fin-card1">
+              <h2 className="finCard-title">Finance Window 3</h2>
+              <button
+                className="disable"
+                onClick={() =>
+                  handleToggleStatus("Window3", window3Status, setWindow3Status)
+                }
+              >
+                {window3Status === "Active" ? "Disable" : "Enable"}
+              </button>
+            </div>
 
     </div>
 
@@ -266,12 +333,17 @@ function Settings(){
         <div className="Fin-section">System</div>
 
         <div className="system-wrapper">
-           <div className="system-card">
-             <h5 className="tittle"> Shut off System </h5>
-             <p className="tit-descrip">This will affect all the finance queues and records. Please ensure that this must <br/> be done during break times and after working hours </p>
-           </div>
-           <button className="shutoff-btn">Disable</button>
-        </div>
+            <div className="system-card">
+              <h5 className="tittle"> Shut off System </h5>
+              <p className="tit-descrip">
+                This will affect all the finance queues and records. Please ensure that
+                this must <br /> be done during break times and after working hours.
+              </p>
+            </div>
+            <button className="shutoff-btn" onClick={handleToggleSystemStatus}>
+              {systemStatus === "Active" ? "Disable" : "Enable"}
+            </button>
+          </div>
         
     </div>
   </div>
