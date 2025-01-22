@@ -393,7 +393,7 @@ function Dashboard(){
      <div className="d-container">
       <div className="d-heading">
         <div className="name">
-         <h4>Welcome, Admin Window 1!</h4>
+         <h4>Welcome, Main Admin!</h4>
          <h5 className="dash-date">{dbdate}</h5>
          </div>
             <div className="time">{time}</div>

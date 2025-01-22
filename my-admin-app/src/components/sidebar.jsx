@@ -77,7 +77,7 @@ return(
             <Settings size={22} className='sidebar-icons'/>
             <span className='sidebar-label'>Settings </span></CustomLink>
  
-            <CustomLink className="sidebar-link" href ="/prl">
+            <CustomLink className="sidebar-link" href ="/">
            < LogOut size={22} className='sidebar-icons' flip="horizontal"/>
             <span className='sidebar-label'> Log out</span></CustomLink>
 
