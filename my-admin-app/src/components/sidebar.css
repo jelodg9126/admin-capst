@@ -21,13 +21,14 @@
 .sidebar-logo{
   display: flex;
   align-items: center;
-  padding: 15px;
+  padding: 10px;
   font-family: 'inter',sans-serif;
   font-style: italic;
   font-weight: 180;
   font-size: 2rem;
   color: #1C2E8B;
    margin-bottom: 1rem;
+   justify-content: center;
 }
 
 .sidebar-logo2{
@@ -43,7 +44,6 @@
 }
 
 
-
 .sidebar-header1, .sidebar-header2{
   padding: 12px;
   font-family: 'nobile', sans-serif;
@@ -52,11 +52,7 @@
   font-weight: 500;
 }
 
-.sidebar-header2{
-  margin-top: 1rem;
-}
-
-.pages a{
+.sidebar-pages1 a{
   display: flex;
   align-items: center;
   text-align: center;
@@ -103,17 +99,11 @@
   transition: 0.3s;
 }
 
-
-.win-header{
-  padding: 12px;
-  font-family: 'nobile', sans-serif;
-  font-size: 12px;
-  color: rgb(124, 124, 124);
-  font-weight: 500;
-  margin-top: 4rem;
+.sidebar-header2{
+  margin-top: 2rem;
 }
 
-.windows a{
+.sidebar-pages2 a{
   display: flex;
   align-items: center;
   text-align: center;
@@ -124,11 +114,8 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.one{
-  border: 1px solid;
-  border-radius: 7px;
-  background-color:rgb(133, 133, 133);
-  color: aliceblue;
+.Config-Pages{
+  margin-top: 4rem;
 }
 
 .logout{
@@ -140,6 +127,39 @@
 }
 
 @media only screen and (max-width: 1145px) {
+  .sidebar-container{
+    max-width: 90px;         
+    width: auto !important;   
+    width:90px; 
+  }
+  .sidebar-label {
+ display: none;
+  }
+  
+  .sidebar-logo{
+    display: none;
+  }
+
+  .sidebar-logo2{
+    display: flex;
+  }
+
+  .sidebar-header1, .sidebar-header2{
+   padding: 4px 0px;
+   text-align: center;
+  }
+
+  .sidebar-header2{
+    margin-top: 1.5rem;
+  }
+
+  .sidebar-icons{
+    margin-top: 7px;
+  }
+
+  .sidebar-link.active{
+    padding: 12px 10px 10px;
+  }
 }
 
 

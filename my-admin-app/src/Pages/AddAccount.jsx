@@ -63,34 +63,40 @@ function AddAccount() {
    <>
    <Sidebar/>
     <div className="d-container">
-      <div className="reg-cont">
-      <div className="d-head">
+    <div className="d-head">
          <h4>Admin Registration</h4>
-            <hr className="line"/>
+         <hr/>
       </div>
-         
-      <div className="register-card">
-
-        <form id="regForm" onSubmit={handleSubmit}>
-            
+      <div className="reg-cont">
+         <div className="addAcc-card">
+        <div className="credWrap">
           <p className="creds">Username</p>
-          <input type="text" className="rinput" id="username" name="username" value={username} onChange={(e) => setUserName(e.target.value)} required/>
+          <input type="text" className="addAcc-input" id="username" name="username" value={username} onChange={(e) => setUserName(e.target.value)} required/>
+        </div>
           
+        <div className="credWrap">
           <p className="creds">Name</p>
-          <input type="text" className="rinput" id="name" name="name" value={name} onChange={(e) => setName(e.target.value)} required />
+          <input type="text" className="addAcc-input" id="name" name="name" value={name} onChange={(e) => setName(e.target.value)} required />
+          </div>
 
+          <div className="credWrap">
           <p className="creds">Password</p>
-          <input type="password" className="rinput" id="password" name="password" value={Apassword} onChange={(e) => setPassword(e.target.value)} required />
+          <input type="password" className="addAcc-input" id="password" name="password" value={Apassword} onChange={(e) => setPassword(e.target.value)} required />
+          </div>
 
+          <div className="credWrap">
           <p className="creds">Confirm Password</p>
-          <input type="password" className="rinput" id="confirmPassword" name="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+          <input type="password" className="addAcc-input" id="confirmPassword" name="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+          </div>
+          </div>
 
-          <button type="submit" className="rbtn" id="signupBtn"> Sign Up </button>
-        </form>
+          <button type="submit" className="addAcc-btn" id="signupBtn" onSubmit={handleSubmit}> Sign Up </button>
+      
         {response && <div id="response">{response}</div>}
+
       </div>
       </div>
-    </div>
+  
     </>
   );
 }

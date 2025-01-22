@@ -17,6 +17,7 @@ import PendingQueues from './Pages/PendingQueues';
 import LogHis from './Pages/LogHis';
 import { database } from './firebase.config'; 
 import Login from './Pages/Login';
+import Settings from './Pages/Settings';
 
 
 
@@ -45,6 +46,7 @@ function App() {
         <Route path="/acc" element={<AddAccount />} />
         <Route path="/win" element={<Wins/>} />
         <Route path="/pqs" element={<PendingQueues/>} />
+        <Route path="/sts" element={<Settings/>} />
 
       </Routes>
     </div>

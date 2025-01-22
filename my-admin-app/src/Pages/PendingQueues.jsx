@@ -159,7 +159,7 @@ function PendingQueues(){
       <Sidebar/>
       <div className ="d-container">
         <div className="p-7 border border-solid">
-      <h2 className= "">User</h2>
+      <h2 className= "font-nobile text-[#1c2e8b] text-3xl font-medium">Pending Users</h2>
       </div>
           <div className="flex flex-col min-h-full max-xl:-4xl py-12 px-4 sm:px-6 lg:px-8">
                <div className="mb-4 relative">

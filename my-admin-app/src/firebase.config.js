@@ -1,7 +1,16 @@
 // src/firebaseConfig.js
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getDatabase, ref, set, get, child } from "firebase/database";
+
+import { getDatabase, ref, set, get, child, query,
+    orderByChild,
+    equalTo,
+    limitToFirst,
+    onValue,
+    update,
+    push,
+    remove,} from "firebase/database";
+
 
 
 

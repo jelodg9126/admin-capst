@@ -25,19 +25,20 @@ function Sidebar(){
 return(
   <div className="sidebar-container">
     <div className="sidebar-pages">
+      
      <div className="sidebar-logo">EasyQs.</div>
      <div className="sidebar-logo2">E</div>
 
-       <div className="pages">
+       <div className="sidebar-pages1">
 
-         <div className='dashi'>
+  
           <h3 className='sidebar-header1'>MAIN MENU</h3>
 
           <CustomLink className='sidebar-link' href ="/" >
           <House size={22} className='sidebar-icons' />
           <span className='sidebar-label'>Dashboard</span></CustomLink> 
 
-         </div>
+   
 
         <CustomLink className='sidebar-link' href ="/users" >
         <Users size={22} className='sidebar-icons' />
@@ -57,7 +58,7 @@ return(
 
       </div>
 
-        <div className="windows">  
+        <div className="sidebar-pages2">  
           <h4 className="sidebar-header2">FINANCE WINDOW</h4> 
         
            <CustomLink className='sidebar-link' href="/win1" >
@@ -72,11 +73,12 @@ return(
            <Grid2x2 size={22} className='sidebar-icons'/>
            <span className='sidebar-label'>Window 3</span></CustomLink>
 
-
-            <CustomLink className="sidebar-link" href ="/settings">
+        <div className="Config-Pages">
+            <CustomLink className="sidebar-link" href ="/sts">
             <Settings size={22} className='sidebar-icons'/>
             <span className='sidebar-label'>Settings </span></CustomLink>
  
+<<<<<<< Updated upstream
             <CustomLink className="sidebar-link" href="/" nClick={() => {
             console.log("User logged out successfully");
             }}>
@@ -85,6 +87,12 @@ return(
             </CustomLink>
 
 
+=======
+            <CustomLink className="sidebar-link" href ="/prl">
+           < LogOut size={22} className='sidebar-icons' flip="horizontal"/>
+            <span className='sidebar-label'> Log out</span></CustomLink>
+            </div>
+>>>>>>> Stashed changes
         </div>
     </div>
    </div>

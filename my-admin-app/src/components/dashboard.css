@@ -8,7 +8,7 @@
     flex-direction: column;
     background-color: white;
     margin: 10px;
-    width: 80%;
+    width: 85%;
     border-radius: 12px;
     overflow-y: scroll;
     scrollbar-color: white;
@@ -35,6 +35,16 @@
 .time{
     margin-right: 50px;
     
+}
+
+.topDiv-header{
+    padding: 5px;
+    font-family: 'inter', sans-serif;
+    font-size: 23px;
+    font-weight: 500;
+    letter-spacing: .5px;
+    color: #1C2E8B;
+
 }
 .topdiv{
     display: flex;
@@ -95,9 +105,18 @@
   }
 .student-dept{
   width: 85%;
-  height: 20rem;
+  height: 17rem;
 }
 
+
+.table-header{
+    padding: 10px 35px;
+    font-family: 'inter', sans-serif;
+    font-weight: 500;
+    font-size: 25px;
+    color: #1C2E8B;
+    letter-spacing: .5px;
+}
 
 table {
     width: 100%;

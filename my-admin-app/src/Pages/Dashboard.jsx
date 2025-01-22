@@ -83,6 +83,8 @@ const columns = [
   }),
 ];
 
+
+
 //code sa bargraph
 function BarChart({ database }) {
   const [sourceData, setSourceData] = useState([]);
@@ -191,6 +193,7 @@ function Dashboard(){
     day: 'numeric',
   });
 
+  //Clock displayeye
   useEffect(() => {
     const interval = setInterval(() => {
       setTime(new Date().toLocaleTimeString('en-PH'));
@@ -200,93 +203,10 @@ function Dashboard(){
     return () => clearInterval(interval);
   }, []);
 
-  //code sa pagreset ng daily queue record
-  const today = new Date().toISOString().split("T")[0];
-  const handleResetDaily = async () => {
-    try {
-      const dailyRef = ref(database, "daily_queue_number_counter");
-      const completedQueuesRef = ref(database, "CompletedQueues");
-      const dailyRecordRef = ref(database, `DailyQueueRecord/${today}`);
-  
-      // 1. Get the current daily_queue_number_counter value
-      const dailySnapshot = await get(dailyRef);
-      const dailyQueueNumberCounter = dailySnapshot.exists()
-        ? dailySnapshot.val()
-        : 0;
-  
-      // 2. Fetch CompletedQueues data for today
-      const completedSnapshot = await get(completedQueuesRef);
-  
-      let totalCompleted = 0;
-      let totalCancelled = 0;
-  
-      if (completedSnapshot.exists()) {
-        const queues = completedSnapshot.val();
-        Object.values(queues).forEach((queue) => {
-          // Parse the date from Date_and_Time_Submitted
-          const queueDate = new Date(queue.Date_and_Time_Submitted).toISOString().split("T")[0];
-          if (queueDate === today) {
-            if (queue.Status === "Completed") {
-              totalCompleted++;
-            } else if (queue.Status === "Cancelled") {
-              totalCancelled++;
-            }
-          }
-        });
-      }
-  
-      // 3. Create the DailyQueueRecord entry
-      await set(dailyRecordRef, {
-        TotalCompleted: totalCompleted,
-        TotalCancelled: totalCancelled,
-        TotalQueues: dailyQueueNumberCounter,
-      });
-  
-      // 4. Reset daily_queue_number_counter to 0
-      await set(dailyRef, 0);
-  
-      alert("Daily Queue Record has been retrieved and counter has been reset successfully!");
-    } catch (error) {
-      console.error("Error resetting daily queue:", error);
-      alert("Failed to reset daily queue. Please try again.");
-    }
-  };
 
-  //code sa pagreset ng monthly queue record
-  const handleResetMonthly = async () => {
-    const dbRef = ref(database); // Reference to the database root
-    const currentDate = new Date();
-    const currentMonth = currentDate.toLocaleString("default", { month: "long" }); // e.g., "January"
-    const currentYear = currentDate.getFullYear();
-    const monthId = `${currentMonth}-${currentYear}`; // e.g., "January-2025"
-  
-    try {
-      // Step 1: Retrieve the current value of monthly_queue_number_counter
-      const counterRef = ref(database, "monthly_queue_number_counter");
-      const counterSnapshot = await get(counterRef);
-  
-      if (counterSnapshot.exists()) {
-        const counterValue = counterSnapshot.val(); // Get the counter value
-  
-        // Step 2: Create the MonthlyQueueRecord table
-        const monthlyQueueRef = ref(database, `MonthlyQueueRecord/${monthId}`);
-        await set(monthlyQueueRef, {
-          TotalQueueRecord: counterValue, // Store the counter value
-        });
-  
-        console.log(`Monthly queue record created for ${monthId}`);
-  
-        // Step 3: Reset monthly_queue_number_counter to 0
-        await set(counterRef, 0);
-        alert("Monthly Queue Record has been retrieved and counter has been reset successfully!");
-        console.log("Monthly queue number counter reset to 0");
-      } else {
-        console.error("monthly_queue_number_counter does not exist.");
-      }
-    } catch (error) {
-      console.error("Error resetting monthly queue record:", error);
-    }
-  };
+
+
+ 
 
   //code sa pagdisplay ng daily at monthly visitors
   useEffect(() => {
@@ -386,6 +306,9 @@ function Dashboard(){
     getPaginationRowModel: getPaginationRowModel(),
   });
 
+
+  
+
   console.log(table.getRowModel());
     return(
    <>
@@ -400,30 +323,28 @@ function Dashboard(){
       </div>
        <hr/>
      <div className="d-content">
+     <div className="topDiv-header">Analytics</div>
       <div className="topdiv">
      <div className="visit-wrapper">
       <div className="visit-card">
          <h3 className="visit-header">Visitors Today</h3>
          <h1 className="visitor-count">{visitorCount}</h1>
 
-         <button className="btnResetDaily" onClick={handleResetDaily}>
-                  Reset Daily
-                </button>
        </div>
 
        <div className="visit-card">
          <h3 className="visit-header">This Month</h3>
          <h1 className="mos-visitor">{monthlyVisitorCount}</h1>
-         <button className="btnResetMonthly" onClick={handleResetMonthly}>
-                  Reset Monthly
-                </button>
+        
       </div>
       </div>
       <BarChart database={database} />
       </div>
       </div>
+
+      <div className="table-header"> Transaction History</div>
   
-      <div className="flex flex-col min-h-full max-xl:-4xl py-12 px-4 sm:px-6 lg:px-8">
+      <div className="flex flex-col min-h-full max-xl:-4xl py-3 px-4 sm:px-6 lg:px-8">
       <div className="mb-4 relative">
         <input
           value={globalFilter ?? ""}
@@ -437,6 +358,8 @@ function Dashboard(){
         />
       </div>
 
+
+      
       <div className="overflow-x-auto bg-white shadow-md rounded-lg">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
@@ -483,6 +406,7 @@ function Dashboard(){
         </table>
       </div>
 
+       {/* Completed Track Table */}
       <div className="flex flex-col sm:flex-row justify-between items-center mt-4 text-sm text-gray-700">
         <div className="flex items-center mb-4 sm:mb-0">
           <span className="mr-2">Items per page</span>
