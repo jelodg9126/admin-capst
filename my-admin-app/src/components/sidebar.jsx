@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import { faGear } from '@fortawesome/free-solid-svg-icons'
 import { Link, useLocation } from "react-router-dom";
-import { Settings, UserPlus, Users, House, LogOut, Grid2x2, CircleEllipsis } from 'lucide-react'
+import { Settings, UserPlus, Users, House, LogOut, Grid2x2, CircleEllipsis, History } from 'lucide-react'
 
 function Sidebar(){
 
@@ -52,8 +52,9 @@ return(
         <CustomLink className='sidebar-link' href ="/acc" >
         <UserPlus size={22} className='sidebar-icons' />
         <span className='sidebar-label'> Add Account </span></CustomLink>
+
         <CustomLink className='sidebar-link' href ="/LogHis" >
-        <UserPlus size={22} className='sidebar-icons' />
+        <History size={22} className='sidebar-icons' />
         <span className='sidebar-label'> Login History </span></CustomLink>
 
       </div>
@@ -78,14 +79,22 @@ return(
             <Settings size={22} className='sidebar-icons'/>
             <span className='sidebar-label'>Settings </span></CustomLink>
  
+<<<<<<< Updated upstream
             <CustomLink className="sidebar-link" href="/" onClick={() => {
+=======
+            <CustomLink className="sidebar-link" href="/wins" nClick={() => {
+>>>>>>> Stashed changes
             console.log("User logged out successfully");
             }}>
             <LogOut size={22} className="sidebar-icons" flip="horizontal" />
             <span className="sidebar-label">Log out</span>
             </CustomLink>
+           </div>
 
+<<<<<<< Updated upstream
             </div>
+=======
+>>>>>>> Stashed changes
         </div>
     </div>
    </div>

@@ -32,26 +32,32 @@ function App() {
     <>
     <div className="app-container">
       <Routes>
+<<<<<<< Updated upstream
         <Route path="/" element={<Wins/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard1" element={<Dashboard1 />} />
+=======
+        <Route path="/log" element={<Login/>} />
+        <Route path="/" element={<Dashboard />} />
+         <Route path="/dashboard1" element={<Dashboard1 />} />
+>>>>>>> Stashed changes
         <Route path="/dashboard2" element={<Dashboard2 />} />
         <Route path="/dashboard3" element={<Dashboard3 />} />
         <Route path="/log1" element={<LogAdmin1 />} />
         <Route path="/log2" element={<LogAdmin2 />} />
-        <Route path="/log3" element={<LogAdmin3 />} /> 
+        <Route path="/log3" element={<LogAdmin3 />} />  
         <Route path="/logHis" element={<LogHis database={database} />} />
         <Route path="/win1" element={<Window1/>} />
         <Route path="/winad1" element={<WindowAd1/>} />
         <Route path="/winad2" element={<WindowAd2/>} />
-        <Route path="/winad3" element={<WindowAd3/>} />
+        <Route path="/winad3" element={<WindowAd3/>} /> 
         <Route path="/users" element={<Users />} />
         <Route path="/users1" element={<Users1 />} />
         <Route path="/users2" element={<Users2 />} />
         <Route path="/users3" element={<Users3 />} />
         <Route path="/acc" element={<AddAccount />} />
-        <Route path="/win" element={<Wins/>} />
+        <Route path="/wins" element={<Wins/>} />
         <Route path="/pqs" element={<PendingQueues/>} />
         <Route path="/sts" element={<Settings/>} />
 

@@ -1,0 +1,33 @@
+[
+    {
+      "date": "Jan 3, 2025",
+      "completed":"12",
+      "cancelled": "1",
+      "total": "13"
+    },
+    {
+      "date": "Jan 3, 2025",
+      "completed":"26",
+      "cancelled": "0",
+      "total": "26"
+    },
+    {
+      "date": "Jan 3, 2025",
+      "completed":"23",
+      "cancelled": "1",
+      "total": "24"
+    },
+    {
+      "date": "Jan 3, 2025",
+      "completed":"22",
+      "cancelled": "0",
+      "total": "22"
+    },
+    {
+      "date": "Jan 3, 2025",
+      "completed":"12",
+      "cancelled": "0",
+      "total": "12"
+    }
+  ]
+  

@@ -97,6 +97,7 @@
   line-height: 2;
   font-weight: 450;
   transition: 0.3s;
+  font-weight: 350;
 }
 
 .sidebar-header2{
@@ -115,7 +116,7 @@
 }
 
 .Config-Pages{
-  margin-top: 4rem;
+  margin-top: 1rem;
 }
 
 .logout{

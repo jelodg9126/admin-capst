@@ -25,9 +25,6 @@
     font-weight: 500;
 }
 
-
-
-
 .user-container{
     background-color: #ffffff;
     border-radius: 12px;
@@ -41,40 +38,65 @@
     flex-direction: column;
     gap: 1.5rem;
     padding: 2.5rem 60px;
-    border: 1px solid black;
+    border: 1px solid #1C2E8B;
+    border-radius: 12px;
     font-family:'inter',sans-serif;
     font-weight:lighter;
     font-size: 14px; 
 }
 
+.user-Info{
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+    font-size: 15px;
+}
+
+.uid{
+    font-family: 'inter', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    min-width: 100px; /* Adjust as necessary for consistent width */
+    text-align: right;    
+}
+
+.userInfo-value{
+    font-size: 18px;
+    font-family: 'Noto sans', sans-serif;
+    font-weight: 600;
+    color: black;
+    text-align: left;
+}
+
 .queue-container{
     display: flex;
-   justify-content: center;
-   gap: 1rem;
-    border: 1px solid pink;
+    justify-content: center;
+    gap: 1rem;
 }
 
 .queue-card{
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 1px solid black;
+    border: 1px solid #1C2E8B;
     background-color: white;
     border-radius: 12px;
-    padding: 5rem 10rem;
+    padding: 4rem 10rem;
 }
 
 .current-queue{
     color: #1C2E8B;
-    font-family: 'Noto Sans', sans-serif;
+    font-family: 'Noto sans', sans-serif;
     font-size: 2rem;
     font-weight: 400;
 }
 
 .q-num{
     font-family: 'inter',sans-serif;
-    color: #1C2E8B;
+    font-weight: 600;
+    color: black;
     font-size: 3rem;
+    margin-top: 10px;
 }
 
 .qBtn-container{
@@ -97,21 +119,22 @@
     font-weight: 100;
     cursor: pointer;
     transition: 0.3s;
-
 }
 
 
 @media only screen and (max-width: 1145px) {
+    .win1-container{
+        width: 90%;
+    }
      
   }
   
   
   @media only screen and (max-width: 1024px) {
-    .win1-container{
-        width: 90%;
-    }
+ 
   
   }
+
     @media only screen and (max-width: 768px) {
       .title2 {
      display: none;

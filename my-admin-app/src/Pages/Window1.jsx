@@ -197,11 +197,31 @@ function Window1() {
         <hr />
         <div className="user-container">
           <div className="userInfo-card">
-            <h3 className="uid">User ID: {currentQueue?.UserID || "N/A"}</h3>
-            <h3 className="name">Name: {currentQueue?.Name || "N/A"}</h3>
-            <h3 className="email">Email: {currentQueue?.Email || "N/A"}</h3>
-            <h3 className="contact">Contact No: {currentQueue?.ContactNumber || "N/A"}</h3>
-            <h3 className="purpose">Purpose: {currentQueue?.Queue_Purpose || "N/A"}</h3>
+             <div className="user-Info">
+            <h3 className="uid">User ID:</h3>
+            <span className="userInfo-value">  {currentQueue?.UserID || "N/A"} </span>
+            </div>
+             
+            <div className="user-Info">
+            <h3 className="uid">Name: </h3>
+            <span className="userInfo-value"> {currentQueue?.Name || "N/A"} </span>
+            </div>
+
+            <div className="user-Info">
+            <h3 className="uid">Email:</h3>
+            <span className="userInfo-value">  {currentQueue?.Email || "N/A"} </span>
+            </div>
+             
+            <div className="user-Info">
+            <h3 className="uid">Contact No: </h3>
+            <span className="userInfo-value"> {currentQueue?.ContactNumber || "N/A"} </span>
+            </div>
+            
+            <div className="user-Info">
+            <h3 className="uid">Purpose: </h3>
+            <span className="userInfo-value"> {currentQueue?.Queue_Purpose || "N/A"} </span>
+            </div>
+
           </div>
         </div>
         <div className="queue-container">

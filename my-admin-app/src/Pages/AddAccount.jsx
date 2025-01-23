@@ -77,22 +77,22 @@ function AddAccount() {
          <div className="addAcc-card">
         <div className="credWrap">
           <p className="creds">Username</p>
-          <input type="text" className="addAcc-input" id="username" name="username" value={username} onChange={(e) => setUserName(e.target.value)} required/>
+          <input type="text" className="addAcc-input" id="username" name="username"  placeholder='juandcruz69' value={username} onChange={(e) => setUserName(e.target.value)} required/>
         </div>
           
         <div className="credWrap">
           <p className="creds">Name</p>
-          <input type="text" className="addAcc-input" id="name" name="name" value={name} onChange={(e) => setName(e.target.value)} required />
+          <input type="text" className="addAcc-input" id="name" name="name"  placeholder= 'Juan Dela Cruz' value={name} onChange={(e) => setName(e.target.value)} required />
           </div>
 
           <div className="credWrap">
           <p className="creds">Password</p>
-          <input type="password" className="addAcc-input" id="password" name="password" value={Apassword} onChange={(e) => setPassword(e.target.value)} required />
+          <input type="password" className="addAcc-input" id="password" name="password" placeholder='********' value={Apassword} onChange={(e) => setPassword(e.target.value)} required />
           </div>
 
           <div className="credWrap">
           <p className="creds">Confirm Password</p>
-          <input type="password" className="addAcc-input" id="confirmPassword" name="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+          <input type="password" className="addAcc-input" id="confirmPassword" name="confirmPassword" placeholder='********' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
           </div>
           </div>
 
