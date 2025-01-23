@@ -10,6 +10,9 @@ import WindowAd2 from '../../../Win2/admin-capst/my-admin-app/src/Pages/WindowAd
 import LogAdmin3 from '../../../Win3/admin-capst/my-admin-app/src/Pages/LoginAd3';
 import Dashboard3 from '../../../Win3/admin-capst/my-admin-app/src/Pages/Dashboard3';
 import WindowAd3 from '../../../Win3/admin-capst/my-admin-app/src/Pages/WindowAd3';
+import Users1 from '../../../Win1/admin-capst/my-admin-app/src/Pages/Users1';
+import Users2 from '../../../Win2/admin-capst/my-admin-app/src/Pages/Users2';
+import Users3 from '../../../Win3/admin-capst/my-admin-app/src/Pages/Users3';
 import Users from './Pages/Users';
 import AddAccount from './Pages/AddAccount';
 import Wins from './Pages/Wins';
@@ -29,7 +32,8 @@ function App() {
     <>
     <div className="app-container">
       <Routes>
-        <Route path="/" element={<Login/>} />
+        <Route path="/" element={<Wins/>} />
+        <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard1" element={<Dashboard1 />} />
         <Route path="/dashboard2" element={<Dashboard2 />} />
@@ -43,6 +47,9 @@ function App() {
         <Route path="/winad2" element={<WindowAd2/>} />
         <Route path="/winad3" element={<WindowAd3/>} />
         <Route path="/users" element={<Users />} />
+        <Route path="/users1" element={<Users1 />} />
+        <Route path="/users2" element={<Users2 />} />
+        <Route path="/users3" element={<Users3 />} />
         <Route path="/acc" element={<AddAccount />} />
         <Route path="/win" element={<Wins/>} />
         <Route path="/pqs" element={<PendingQueues/>} />

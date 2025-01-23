@@ -53,7 +53,13 @@ function AddAccount() {
         Date_and_Time_Registered: registrationDate,
       });
 
-      setResponse("Registration Successful");
+      alert("Registration Successful");
+      setUserName('');
+      setName('');
+      setPassword('');
+      setConfirmPassword('');
+
+      
     } catch (error) {
       setResponse(`Error: ${error.message}`);
     }
@@ -90,7 +96,12 @@ function AddAccount() {
           </div>
           </div>
 
-          <button type="submit" className="addAcc-btn" id="signupBtn" onSubmit={handleSubmit}> Sign Up </button>
+          <form onSubmit={handleSubmit}>
+  <button type="submit" className="addAcc-btn" id="signupBtn">
+    Sign Up
+  </button>
+</form>
+
       
         {response && <div id="response">{response}</div>}
 

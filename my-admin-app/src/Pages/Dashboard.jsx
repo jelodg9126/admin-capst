@@ -120,7 +120,7 @@ function BarChart({ database }) {
       setSourceData(formattedData);
     });
 
-    // Cleanup listener when component unmounts
+
     return () => unsubscribe();
   }, [database]);
   return (
@@ -212,7 +212,7 @@ function Dashboard(){
   useEffect(() => {
     const fetchData = () => {
       try {
-        // Fetch daily_queue_number_counter with onValue for real-time updates
+
         const dailyRef = ref(database, "daily_queue_number_counter");
         const dailyUnsubscribe = onValue(dailyRef, (snapshot) => {
           if (snapshot.exists()) {
@@ -222,7 +222,7 @@ function Dashboard(){
           }
         });
   
-        // Fetch monthly_queue_number_counter with onValue for real-time updates
+
         const monthlyRef = ref(database, "monthly_queue_number_counter");
         const monthlyUnsubscribe = onValue(monthlyRef, (snapshot) => {
           if (snapshot.exists()) {
@@ -232,7 +232,7 @@ function Dashboard(){
           }
         });
   
-        // Cleanup function to unsubscribe from listeners
+  
         return () => {
           dailyUnsubscribe();
           monthlyUnsubscribe();
@@ -266,14 +266,14 @@ function Dashboard(){
           setData(formattedData);
         } else {
           console.log("No data available");
-          setData([]); // Clear the table if there's no data
+          setData([]); // Clear the table if walang data
         }
       } catch (error) {
         console.error("Error processing snapshot data: ", error);
       }
     });
   
-    // Cleanup listener when the component unmounts
+
     return () => unsubscribe();
   }, []);
 
@@ -289,7 +289,7 @@ function Dashboard(){
     state: {
       sorting,
       globalFilter,
-      pagination, // Use the pagination state here
+      pagination,
     },
     initialState: {
       pagination: {
@@ -299,7 +299,7 @@ function Dashboard(){
     },
     onSortingChange: setSorting,
     onGlobalFilterChange: setGlobalFilter,
-    onPaginationChange: setPagination, // Update pagination handler
+    onPaginationChange: setPagination, 
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),

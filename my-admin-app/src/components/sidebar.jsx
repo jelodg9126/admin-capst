@@ -34,7 +34,7 @@ return(
   
           <h3 className='sidebar-header1'>MAIN MENU</h3>
 
-          <CustomLink className='sidebar-link' href ="/" >
+          <CustomLink className='sidebar-link' href ="/dashboard" >
           <House size={22} className='sidebar-icons' />
           <span className='sidebar-label'>Dashboard</span></CustomLink> 
 
@@ -78,7 +78,7 @@ return(
             <Settings size={22} className='sidebar-icons'/>
             <span className='sidebar-label'>Settings </span></CustomLink>
  
-            <CustomLink className="sidebar-link" href="/" nClick={() => {
+            <CustomLink className="sidebar-link" href="/" onClick={() => {
             console.log("User logged out successfully");
             }}>
             <LogOut size={22} className="sidebar-icons" flip="horizontal" />
