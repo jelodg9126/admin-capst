@@ -8,7 +8,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #fff;
+    background-image: linear-gradient(180deg,rgb(255, 255, 255),rgb(235, 241, 255),rgb(122, 144, 227), rgb(18, 46, 172));
     width: 100%;
     height: 100vh;
 }
@@ -22,7 +22,6 @@
    font-style: italic;
    color: #1C2E8B;
    padding-bottom: 1rem;
- 
 }
 
 .log-card{
@@ -31,6 +30,7 @@
     border: 1px solid rgb(130, 130, 130);
     border-radius: 12px;
     box-shadow: 2px 2px 3px rgb(215, 211, 211);
+   
 }
 
 .log-creds{
@@ -44,6 +44,7 @@
     font-family: 'nobile', sans-serif;
     font-weight: 100;
     font-size: 1rem;
+
 }
 
 .inpz{
@@ -51,6 +52,7 @@
     width: 25rem;
     border: 1px solid rgb(226, 222, 220);
     border-radius: 10px;
+    
 }
 
 .log-submit{
@@ -65,9 +67,11 @@
     margin-left: 5rem;
     cursor: pointer;
     transition: 0.3s;
+    box-shadow: 2px 4px 3px rgb(227, 225, 225);
 }
 
 .log-submit:hover{
+    border: 1px solid rgb(59, 59, 59);
     background-color: #2f419b;
     color: #fff;
     transition: 0.3s;

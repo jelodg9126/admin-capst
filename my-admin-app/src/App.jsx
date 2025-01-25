@@ -21,6 +21,7 @@ import LogHis from './Pages/LogHis';
 import { database } from './firebase.config'; 
 import Login from './Pages/Login';
 import Settings from './Pages/Settings';
+import Feedback from './Pages/Feedback';
 
 
 
@@ -32,16 +33,10 @@ function App() {
     <>
     <div className="app-container">
       <Routes>
-<<<<<<< Updated upstream
         <Route path="/" element={<Wins/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard1" element={<Dashboard1 />} />
-=======
-        <Route path="/log" element={<Login/>} />
-        <Route path="/" element={<Dashboard />} />
-         <Route path="/dashboard1" element={<Dashboard1 />} />
->>>>>>> Stashed changes
         <Route path="/dashboard2" element={<Dashboard2 />} />
         <Route path="/dashboard3" element={<Dashboard3 />} />
         <Route path="/log1" element={<LogAdmin1 />} />
@@ -59,6 +54,7 @@ function App() {
         <Route path="/acc" element={<AddAccount />} />
         <Route path="/wins" element={<Wins/>} />
         <Route path="/pqs" element={<PendingQueues/>} />
+        <Route path="/fdbck" element={<Feedback/>} />
         <Route path="/sts" element={<Settings/>} />
 
       </Routes>

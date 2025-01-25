@@ -1,8 +1,5 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
-import { faGear } from '@fortawesome/free-solid-svg-icons'
 import { Link, useLocation } from "react-router-dom";
-import { Settings, UserPlus, Users, House, LogOut, Grid2x2, CircleEllipsis, History } from 'lucide-react'
+import { Settings, UserPlus, Users, House, LogOut, Grid2x2, CircleEllipsis, History, MessageSquareText } from 'lucide-react'
 
 function Sidebar(){
 
@@ -26,7 +23,7 @@ return(
   <div className="sidebar-container">
     <div className="sidebar-pages">
       
-     <div className="sidebar-logo">EasyQs.</div>
+     <div className="sidebar-logo">EasyQ's.</div>
      <div className="sidebar-logo2">E</div>
 
        <div className="sidebar-pages1">
@@ -57,33 +54,20 @@ return(
         <History size={22} className='sidebar-icons' />
         <span className='sidebar-label'> Login History </span></CustomLink>
 
+        <CustomLink className='sidebar-link' href ="/fdbck" >
+        <MessageSquareText size={22} className='sidebar-icons' />
+        <span className='sidebar-label'> Feedback </span></CustomLink>
+
       </div>
 
         <div className="sidebar-pages2">  
-          <h4 className="sidebar-header2">FINANCE WINDOW</h4> 
-        
-           <CustomLink className='sidebar-link' href="/win1" >
-           <Grid2x2 size={22} className='sidebar-icons'/>
-           <span className='sidebar-label'>Window 1 </span></CustomLink>
-
-           <CustomLink className='sidebar-link' href="/win2" >
-           <Grid2x2 size={22} className='sidebar-icons'/>
-           <span className='sidebar-label'>Window 2 </span></CustomLink>
-
-           <CustomLink  className='sidebar-link' href="/win3">
-           <Grid2x2 size={22} className='sidebar-icons'/>
-           <span className='sidebar-label'>Window 3</span></CustomLink>
-
+  
         <div className="Config-Pages">
             <CustomLink className="sidebar-link" href ="/sts">
             <Settings size={22} className='sidebar-icons'/>
             <span className='sidebar-label'>Settings </span></CustomLink>
  
-<<<<<<< Updated upstream
             <CustomLink className="sidebar-link" href="/" onClick={() => {
-=======
-            <CustomLink className="sidebar-link" href="/wins" nClick={() => {
->>>>>>> Stashed changes
             console.log("User logged out successfully");
             }}>
             <LogOut size={22} className="sidebar-icons" flip="horizontal" />
@@ -91,13 +75,10 @@ return(
             </CustomLink>
            </div>
 
-<<<<<<< Updated upstream
             </div>
-=======
->>>>>>> Stashed changes
         </div>
     </div>
-   </div>
+
     
 )
 }

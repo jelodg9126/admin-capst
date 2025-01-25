@@ -124,9 +124,9 @@ function LogHis({ database }) {
       <Sidebar />
       <div className="d-container">
         <div className="d-heading">
-          <h4>Login History</h4>
-          <hr className="line" />
+          <h4 className="text-[28px] font-['Noto sans'] font-[600]">Login History</h4>
         </div>
+        <hr/>
         <div className="flex flex-col min-h-full max-xl:-4xl py-12 px-4 sm:px-6 lg:px-8">
           {/* Search Bar */}
           <div className="mb-4 relative">

@@ -134,31 +134,54 @@ function DoughnutChart({ database }) {
   const [sourceData, setSourceData] = useState([]);
 
   useEffect(() => {
-    // Reference to the MonthlyQueueRecord table
+    // Reference to the CompletedQueues table
     const dbRef = ref(database, "CompletedQueues");
     // Listen for real-time updates from the database
     const unsubscribe = onValue(dbRef, (snapshot) => {
-      const months = [
-        "Examination",
-        "Enrollment",
-        "Balance",
-        "Others"
-      ];
+      const specificPurposes = ["Examination", "Enrollment", "Balance"];
       const currentYear = new Date().getFullYear();
-      const formattedData = months.map((month) => {
-        const key = `${month}-${currentYear}`;
-        const queuePurpose = snapshot.val()?.[key];
-        return {
-          label: month,
-          value: queuePurpose ? queuePurpose.Queue_Purpose : "---",
-        };
-      });
+
+      // Initialize counts for purposes
+      const purposeCounts = {
+        Examination: 0,
+        Enrollment: 0,
+        Balance: 0,
+        Others: 0, // Count for all other purposes
+      };
+
+      // Iterate through database entries
+      const rawData = snapshot.val();
+      if (rawData) {
+        Object.keys(rawData).forEach((key) => {
+          const record = rawData[key];
+          const queuePurposeString = record.Queue_Purpose;
+
+          // Split the Queue_Purpose by commas
+          const purposes = queuePurposeString.split(", ").map((item) => item.trim());
+
+          purposes.forEach((purpose) => {
+            if (specificPurposes.includes(purpose)) {
+              purposeCounts[purpose] += 1;
+            } else {
+              purposeCounts.Others += 1;
+            }
+          });
+        });
+      }
+
+      // Format data for the Doughnut chart
+      const formattedData = Object.entries(purposeCounts).map(([key, value]) => ({
+        label: key,
+        value,
+      }));
+
       setSourceData(formattedData);
     });
 
     // Cleanup listener when component unmounts
     return () => unsubscribe();
   }, [database]);
+
   return (
     <div className="donut-card student-rec">
       <Doughnut
@@ -167,9 +190,7 @@ function DoughnutChart({ database }) {
           datasets: [
             {
               label: "Number of Visitors",
-              data: sourceData.map((data) =>
-                data.value === "---" ? 0 : data.value
-              ),
+              data: sourceData.map((data) => data.value),
               backgroundColor: [
                 "#FF6384", // Red
                 "#36A2EB", // Blue
@@ -196,9 +217,7 @@ function DoughnutChart({ database }) {
             tooltip: {
               callbacks: {
                 label: (context) =>
-                  sourceData[context.dataIndex].value === "---"
-                    ? "No data available"
-                    : `Number of Students: ${context.raw}`,
+                  `Number of Students: ${context.raw}`,
               },
             },
           },
@@ -521,14 +540,15 @@ const columns = [
       </div>
 
       <div className="table-header">Daily Queue</div>
-<div className="flex">
-<div className="flex flex-col min-h-full max-w-3xl py-3 px-1 sm:px-6 lg:px-8">
+      <div className="flex flex-col lg:flex-row border-[1px] gap-4">
+      <div className="flex-1">
+<div className="flex flex-col min-h-full py-3 px-2 sm:px-6 lg:px-8">
   <div className="mb-4 relative">
     <input
       value={globalFilter ?? ""}
       onChange={(e) => setGlobalFilter(e.target.value)}
       placeholder="Search..."
-      className="w-72 pl-10 pr-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+      className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
     />
     <Search
       className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
@@ -536,15 +556,15 @@ const columns = [
     />
   </div>
 
-  <div className= "overflow-x-auto bg-white shadow-md rounded-lg">
-    <table className="min-w-full divide-y divide-gray-200">
+  <div className="w-full overflow-x-auto bg-white shadow-md rounded-lg">
+    <table className="min-w-full divide-y divide-gray-200 text-xs sm:text-sm">
       <thead className="bg-gray-50">
         {pendingTable.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
               <th
                 key={header.id}
-                className="w-3/12 text-center p-3 px-9 border text-[11px] font-medium text-blue-800 font-[nobile] uppercase tracking-wider"
+                className="text-center p-3 px-9 border text-[11px] font-medium text-blue-800 font-[nobile] uppercase tracking-wider"
               >
                 <div
                   {...{
@@ -581,6 +601,7 @@ const columns = [
       </tbody>
     </table>
   </div>
+  {/* items per page */}
   <div className="flex flex-col sm:flex-row justify-between items-center mt-4 text-sm text-gray-700">
         <div className=" sm:mb-0">
           <span className="mr-2">Items per page</span>
@@ -598,7 +619,7 @@ const columns = [
             ))}
           </select>
         </div>
-
+       {/* next pagination */}
         <div className="flex items-center space-x-2">
           <button
             className="p-2 rounded-md bg-gray-100 text-gray-600 hover:bg-gray-200 disabled:opacity-50"
@@ -648,10 +669,10 @@ const columns = [
           </button>
         </div>
       </div>
-
+</div>
 </div>
 
-<div>
+<div className="pr-7">
 <DoughnutChart database={database} />
 </div>
 </div>

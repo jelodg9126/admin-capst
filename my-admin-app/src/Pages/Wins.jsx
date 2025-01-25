@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { User } from 'lucide-react';
 
 function Wins() {
   const navigate = useNavigate();
@@ -66,12 +67,10 @@ function Wins() {
     <div className="cont">
       <div className="header">
         {/* Admin text */}
-        <div
-          className="head-logo"
-          onClick={handleAdminClick}
+        <div className="head-logo" onClick={handleAdminClick}
           style={{ cursor: 'default', userSelect: 'none' }} // Makes it look unclickable
         >
-          SmartQueues-<span style={{ textDecoration: '' }}>Admin</span>
+          EasyQ's-<span style={{ textDecoration: '' }}>Admin</span>
         </div>
         <div className="head-win">Finance Window</div>
       </div>
@@ -79,13 +78,13 @@ function Wins() {
       <div className="button-wrapper">
         {/* Button for each window */}
         <button className="btn-1" onClick={() => handleWindowSelection('Window 1')}>
-          Window 1
+        <User size={20}/> <span className="wins-label">Window 1 </span>  
         </button>
         <button className="btn-2" onClick={() => handleWindowSelection('Window 2')}>
-          Window 2
+        <User size={20}/>   Window 2
         </button>
         <button className="btn-3" onClick={() => handleWindowSelection('Window 3')}>
-          Window 3
+        <User size={20}/>  Window 3
         </button>
       </div>
     </div>

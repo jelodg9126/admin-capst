@@ -64,8 +64,8 @@
 }
 
 .sidebar-link.active{
-  background-color: #e6e6e6;
-  color: rgb(92, 92, 92);
+  background-color: #bbd6ee;
+  color: #1C2E8B;
   padding: 10px;
   border-radius: 12px;
   transition: 0.3s;
@@ -116,7 +116,7 @@
 }
 
 .Config-Pages{
-  margin-top: 1rem;
+  margin-top: 12rem;
 }
 
 .logout{
@@ -161,6 +161,8 @@
   .sidebar-link.active{
     padding: 12px 10px 10px;
   }
+
+ 
 }
 
 

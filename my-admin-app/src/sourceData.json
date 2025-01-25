@@ -1,57 +1,18 @@
 [
     {
-        "label": "Jan",
+        "label": "Examination",
         "value": 53
     },
     {
-        "label": "Feb",
+        "label": "Enrollment",
         "value": 12
     },
     {
-        "label": "March",
+        "label": "Balance",
         "value": 20
     },
     {
-        "label": "April",
+        "label": "Others",
         "value": 9
-    },
-    {
-        "label": "May",
-        "value": 26
-    },
-
-    {
-        "label": "June",
-        "value": 94
-    },
-    {
-        "label": "July",
-        "value": 86
-    },
-    {
-        "label": "August",
-        "value": 91
-    },
-
-    {
-        "label": "September",
-        "value": 45
-    },
-
-    {
-        "label": "October",
-        "value": 50
-    },
-
-    {
-        "label": "November",
-        "value": 16
-    },
-
-    {
-        "label": "December",
-        "value": 10
     }
-
-
 ]
