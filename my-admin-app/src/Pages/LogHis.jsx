@@ -30,7 +30,7 @@ function LogHis({ database }) {
   const [globalFilter, setGlobalFilter] = useState("");
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 5,
+    pageSize: 8,
   });
 
   const columnHelper = createColumnHelper();
@@ -85,14 +85,11 @@ function LogHis({ database }) {
             window: entry.window || "---",
           };
         });
-
-        // Sort by date and time (latest first)
         firebaseData.sort((a, b) => {
           const dateA = new Date(`${a.date} ${a.time}`);
           const dateB = new Date(`${b.date} ${b.time}`);
-          return dateB - dateA; // Descending order
+          return dateB - dateA; 
         });
-
         setData(firebaseData);
       } else {
         setData([]);
@@ -200,7 +197,7 @@ function LogHis({ database }) {
                   value={table.getState().pagination.pageSize}
                   onChange={(e) => table.setPageSize(Number(e.target.value))}
                 >
-                  {[5, 10, 20, 30].map((pageSize) => (
+                  {[8, 20, 30].map((pageSize) => (
                     <option key={pageSize} value={pageSize}>
                       {pageSize}
                     </option>

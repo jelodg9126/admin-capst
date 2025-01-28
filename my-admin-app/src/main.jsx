@@ -4,7 +4,6 @@ import './index.css';
 import './App.css';  
 import './components/win-container.css'
 import './components/sidebar.css'
-import './components/window1.css'
 import './components/dashboard.css'
 import './components/logAdmin.css'
 import './components/AddAccount.css'

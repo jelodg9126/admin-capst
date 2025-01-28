@@ -60,9 +60,9 @@ return(
 
       </div>
 
-        <div className="sidebar-pages2">  
+        <div className="config-pages">  
   
-        <div className="Config-Pages">
+     
             <CustomLink className="sidebar-link" href ="/sts">
             <Settings size={22} className='sidebar-icons'/>
             <span className='sidebar-label'>Settings </span></CustomLink>
@@ -74,8 +74,7 @@ return(
             <span className="sidebar-label">Log out</span>
             </CustomLink>
            </div>
-
-            </div>
+     
         </div>
     </div>
 

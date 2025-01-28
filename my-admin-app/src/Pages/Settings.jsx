@@ -265,41 +265,50 @@ function Settings(){
         <div className="Fin-section">Finance Window</div>
         <div className="settings-container">
           <div className="finCard-wrapper">
-            <div className="fin-card1">
-              <h2 className="finCard-title">Finance Window 1</h2>
-              <button
-                className="disable"
-                onClick={() =>
-                  handleToggleStatus("Window1", window1Status, setWindow1Status)
-                }
-              >
-                {window1Status === "Active" ? "Disable" : "Enable"}
-              </button>
-            </div>
+          <div className="fin-card1"
+  style={{
+    backgroundColor: window1Status === "Active" ? "#e0f7fa" : "#ffcccb" // Light blue for active, light red for inactive
+  }}>
+  <h2 className="finCard-title">Finance Window 1</h2>
+  <button
+    className="disable"
+    onClick={() =>
+      handleToggleStatus("Window1", window1Status, setWindow1Status)
+    }
+  >
+    {window1Status === "Active" ? "Disable" : "Enable"}
+  </button>
+</div>
 
-            <div className="fin-card1">
-              <h2 className="finCard-title">Finance Window 2</h2>
-              <button
-                className="disable"
-                onClick={() =>
-                  handleToggleStatus("Window2", window2Status, setWindow2Status)
-                }
-              >
-                {window2Status === "Active" ? "Disable" : "Enable"}
-              </button>
-            </div>
+<div className="fin-card1"
+  style={{
+    backgroundColor: window2Status === "Active" ? "#e0f7fa" : "#ffcccb"
+  }}>
+  <h2 className="finCard-title">Finance Window 2</h2>
+  <button
+    className="disable"
+    onClick={() =>
+      handleToggleStatus("Window2", window2Status, setWindow2Status)
+    }
+  >
+    {window2Status === "Active" ? "Disable" : "Enable"}
+  </button>
+</div>
 
-            <div className="fin-card1">
-              <h2 className="finCard-title">Finance Window 3</h2>
-              <button
-                className="disable"
-                onClick={() =>
-                  handleToggleStatus("Window3", window3Status, setWindow3Status)
-                }
-              >
-                {window3Status === "Active" ? "Disable" : "Enable"}
-              </button>
-            </div>
+<div className="fin-card1"
+  style={{
+    backgroundColor: window3Status === "Active" ? "#e0f7fa" : "#ffcccb"
+  }}>
+  <h2 className="finCard-title">Finance Window 3</h2>
+  <button
+    className="disable"
+    onClick={() =>
+      handleToggleStatus("Window3", window3Status, setWindow3Status)
+    }
+  >
+    {window3Status === "Active" ? "Disable" : "Enable"}
+  </button>
+</div>
 
     </div>
 

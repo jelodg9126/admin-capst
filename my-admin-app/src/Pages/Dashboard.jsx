@@ -2,7 +2,6 @@ import { Chart as ChartJS, defaults } from "chart.js/auto"
 import Sidebar from "../components/sidebar"
 import { Bar, Doughnut } from "react-chartjs-2"
 import sourceData from "../sourceData.json"
-import dailyQueue from "../dailyQueue.json"
 import {
   createColumnHelper,
   flexRender,
@@ -308,7 +307,7 @@ const columns = [
     cell: (info) => info.getValue(),
     header: () => (
       <span className="flex items-center">
-        <ListOrdered className="mr-2" size={18} /> QueueID
+        <ListOrdered className="mr-2" size={18} /> Date & Time
       </span>
     ),
   }),
@@ -364,13 +363,16 @@ const columns = [
           const formattedData = Object.keys(firebaseData).map((id) => {
             const item = firebaseData[id];
             return {
-              QueueID: id,
+              QueueID: item.Date_and_Time_Completed,
               UserID: item.UserID,
               Name: item.Name,
               Queue_Purpose: item.Queue_Purpose,
               Status: item.Status,
             };
-          });
+          }).sort((a, b) => {
+            const dateA = new Date(a.QueueID);
+            const dateB = new Date(b.QueueID);
+            return dateB - dateA;  });
           setData(formattedData);
         } else {
           console.log("No data available");
@@ -388,7 +390,7 @@ const columns = [
   //code sa pagination ng mga table
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
-    pageSize: 5,
+    pageSize: 10,
   });
   
   const table = useReactTable({
@@ -401,7 +403,7 @@ const columns = [
     },
     initialState: {
       pagination: {
-        pageSize: 5,
+        pageSize: 10,
         pageIndex: 0,
       },
     },
@@ -451,9 +453,17 @@ const columns = [
     })
   
   ];
+
+  
   
   // State for the second table
   const [pendingData, setPendingData] = React.useState([]);
+  const [pendingSorting, setPendingSorting] = React.useState([]);
+  const [pendingGlobalFilter, setPendingGlobalFilter] = React.useState("");
+  const [pendingPagination, setPendingPagination] = React.useState({
+    pageIndex: 0,
+    pageSize: 5,
+  });
   
   // Fetch "PendingQueues" data
   React.useEffect(() => {
@@ -470,7 +480,10 @@ const columns = [
               TotalCancelled: item.TotalCancelled,
               Total: item.TotalQueues,
             };
-          });
+          }).sort((a, b) => new Date(b.Date) - new Date(a.Date)); 
+
+          console.log(formattedData);
+        
           setPendingData(formattedData);
         } else {
           console.log("No data available");
@@ -485,28 +498,30 @@ const columns = [
     return () => unsubscribe();
   }, []);
   
+  
   const pendingTable = useReactTable({
     data: pendingData,
     columns: pendingColumns,
     state: {
-      sorting,
-      globalFilter,
-      pagination,
+      sorting: pendingSorting,
+      globalFilter: pendingGlobalFilter,
+      pagination: pendingPagination,
     },
     initialState: {
-      pagination: {
+      pagination1: {
         pageSize: 5,
         pageIndex: 0,
       },
     },
-    onSortingChange: setSorting,
-    onGlobalFilterChange: setGlobalFilter,
-    onPaginationChange: setPagination,
+    onSortingChange: setPendingSorting,
+    onGlobalFilterChange: setPendingGlobalFilter,
+    onPaginationChange: setPendingPagination,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
+
     return(
    <>
      <Sidebar/>
@@ -540,7 +555,7 @@ const columns = [
       </div>
 
       <div className="table-header">Daily Queue</div>
-      <div className="flex flex-col lg:flex-row border-[1px] gap-4">
+      <div className="flex flex-col lg:flex-row gap-4">
       <div className="flex-1">
 <div className="flex flex-col min-h-full py-3 px-2 sm:px-6 lg:px-8">
   <div className="mb-4 relative">
@@ -607,9 +622,9 @@ const columns = [
           <span className="mr-2">Items per page</span>
           <select
             className="border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 p-2"
-            value={table.getState().pagination.pageSize}
+            value={pendingTable.getState().pagination.pageSize}
             onChange={(e) => {
-              table.setPageSize(Number(e.target.value,5));
+              pendingTable.setPageSize(Number(e.target.value,5));
             }}
           >
             {[5, 10, 20, 30].map((pageSize) => (
@@ -620,55 +635,55 @@ const columns = [
           </select>
         </div>
        {/* next pagination */}
-        <div className="flex items-center space-x-2">
-          <button
-            className="p-2 rounded-md bg-gray-100 text-gray-600 hover:bg-gray-200 disabled:opacity-50"
-            onClick={() => table.setPageIndex(0)}
-            disabled={!table.getCanPreviousPage()}
-          >
-            <ChevronsLeft size={20} />
-          </button>
+       <div className="flex items-center space-x-2">
+  <button
+    className="p-2 rounded-md bg-gray-100 text-gray-600 hover:bg-gray-200 disabled:opacity-50"
+    onClick={() => pendingTable.setPageIndex(0)}
+    disabled={!pendingTable.getCanPreviousPage()}
+  >
+    <ChevronsLeft size={20} />
+  </button>
 
-          <button
-            className="p-2 rounded-md bg-gray-100 text-gray-600 hover:bg-gray-200 disabled:opacity-50"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            <ChevronLeft size={20} />
-          </button>
+  <button
+    className="p-2 rounded-md bg-gray-100 text-gray-600 hover:bg-gray-200 disabled:opacity-50"
+    onClick={() => pendingTable.previousPage()}
+    disabled={!pendingTable.getCanPreviousPage()}
+  >
+    <ChevronLeft size={20} />
+  </button>
 
-          <span className="flex items-center">
-            <input
-              min={1}
-              max={table.getPageCount()}
-              type="number"
-              value={table.getState().pagination.pageIndex + 1}
-              onChange={(e) => {
-                const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                table.setPageIndex(page);
-              }}
-              className="w-16 p-2 rounded-md border border-gray-300 text-center"
-            />
-            <span className="ml-1">of {table.getPageCount()}</span>
-          </span>
+  <span className="flex items-center">
+    <input
+      min={1}
+      max={pendingTable.getPageCount()}
+      type="number"
+      value={pendingTable.getState().pagination.pageIndex + 1}
+      onChange={(e) => {
+        const page = e.target.value ? Number(e.target.value) - 1 : 0;
+        pendingTable.setPageIndex(page);
+      }}
+      className="w-16 p-2 rounded-md border border-gray-300 text-center"
+    />
+    <span className="ml-1">of {pendingTable.getPageCount()}</span>
+  </span>
 
-          <button
-            className="p-2 rounded-md bg-gray-100 text-gray-600 hover:bg-gray-200 disabled:opacity-50"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            <ChevronRight size={20} />
-          </button>
+  <button
+    className="p-2 rounded-md bg-gray-100 text-gray-600 hover:bg-gray-200 disabled:opacity-50"
+    onClick={() => pendingTable.nextPage()}
+    disabled={!pendingTable.getCanNextPage()}
+  >
+    <ChevronRight size={20} />
+  </button>
 
-          <button
-            className="p-2 rounded-md bg-gray-100 text-gray-600 hover:bg-gray-200 disabled:opacity-50"
-            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-            disabled={!table.getCanNextPage()}
-          >
-            <ChevronsRight size={20} />
-          </button>
-        </div>
-      </div>
+  <button
+    className="p-2 rounded-md bg-gray-100 text-gray-600 hover:bg-gray-200 disabled:opacity-50"
+    onClick={() => pendingTable.setPageIndex(pendingTable.getPageCount() - 1)}
+    disabled={!pendingTable.getCanNextPage()}
+  >
+    <ChevronsRight size={20} />
+  </button>
+</div>
+</div>
 </div>
 </div>
 
@@ -677,7 +692,7 @@ const columns = [
 </div>
 </div>
 
-      <div className="table-header"> Transaction History</div>
+      <div className="table-header2"> Transaction History</div>
   
       <div className="flex flex-col min-h-full max-xl:-4xl py-3 px-4 sm:px-6 lg:px-8">
       <div className="mb-4 relative">
@@ -752,7 +767,7 @@ const columns = [
               table.setPageSize(Number(e.target.value,5));
             }}
           >
-            {[5, 10, 20, 30].map((pageSize) => (
+            {[10, 15, 20, 30].map((pageSize) => (
               <option key={pageSize} value={pageSize}>
                 {pageSize}
               </option>

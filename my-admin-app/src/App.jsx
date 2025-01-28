@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
 import Dashboard from './Pages/Dashboard';
-import Window1 from './Pages/Window1';
 import LogAdmin1 from '../../../Win1/admin-capst/my-admin-app/src/Pages/LoginAd1';
 import Dashboard1 from '../../../Win1/admin-capst/my-admin-app/src/Pages/Dashboard1';
 import WindowAd1 from '../../../Win1/admin-capst/my-admin-app/src/Pages/WindowAd1';
@@ -43,7 +42,6 @@ function App() {
         <Route path="/log2" element={<LogAdmin2 />} />
         <Route path="/log3" element={<LogAdmin3 />} />  
         <Route path="/logHis" element={<LogHis database={database} />} />
-        <Route path="/win1" element={<Window1/>} />
         <Route path="/winad1" element={<WindowAd1/>} />
         <Route path="/winad2" element={<WindowAd2/>} />
         <Route path="/winad3" element={<WindowAd3/>} /> 

@@ -92,7 +92,7 @@ function Users(){
 
   const [pagination, setPagination] = React.useState({
       pageIndex: 0,
-      pageSize: 5,
+      pageSize: 8,
     });
 
     useEffect(() => {
@@ -220,7 +220,7 @@ function Users(){
                        table.setPageSize(Number(e.target.value,5));
                      }}
                    >
-                     {[5, 10, 20, 30].map((pageSize) => (
+                     {[8, 20, 30].map((pageSize) => (
                        <option key={pageSize} value={pageSize}>
                          {pageSize}
                        </option>
