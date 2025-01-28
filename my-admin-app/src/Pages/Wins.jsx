@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { User } from 'lucide-react';
+import { database } from '../firebase.config';
+import { ref, onValue } from 'firebase/database';
 
 function Wins() {
   const navigate = useNavigate();
   const [adminClickCount, setAdminClickCount] = useState(0);
   const [clickTimer, setClickTimer] = useState(null);
 
-  // Handle clicks on the Admin text
   const handleAdminClick = () => {
     if (clickTimer) {
       clearTimeout(clickTimer); // Reset the timer on every click
@@ -47,45 +47,67 @@ function Wins() {
     };
   }, [clickTimer]);
 
-  // Generalized method to handle window selection
-  const handleWindowSelection = (window) => {
-    const routes = {
-      'Window 1': '/log1',
-      'Window 2': '/log2',
-      'Window 3': '/log3',
-    };
 
-    const route = routes[window];
-    if (route) {
-      navigate(route, { state: { selectedWindow: window } });
-    } else {
-      console.error('Unknown window selected');
+  const [loginStatus, setLoginStatus] = useState({
+    'Window 1': 'Inactive',
+    'Window 2': 'Inactive',
+    'Window 3': 'Inactive',
+  });
+
+  // Fetch login statuses from Firebase
+  useEffect(() => {
+    const statusRef = ref(database, 'QueueSystemStatus');
+    onValue(statusRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setLoginStatus({
+          'Window 1': data.Window1.LoginStatus,
+          'Window 2': data.Window2.LoginStatus,
+          'Window 3': data.Window3.LoginStatus,
+        });
+      }
+    });
+  }, []);
+
+  // Handle window selection
+  const handleWindowSelection = (window) => {
+    if (loginStatus[window] === 'Inactive') {
+      const routes = {
+        'Window 1': '/log1',
+        'Window 2': '/log2',
+        'Window 3': '/log3',
+      };
+      navigate(routes[window], { state: { selectedWindow: window } });
     }
   };
 
   return (
     <div className="cont">
-      <div className="header">
-        {/* Admin text */}
-        <div className="head-logo" onClick={handleAdminClick}
-          style={{ cursor: 'default', userSelect: 'none' }} // Makes it look unclickable
-        >
-          EasyQ's-<span style={{ textDecoration: '' }}>Admin</span>
-        </div>
-        <div className="head-win">Finance Window</div>
+    <div className="header">
+      {/* Admin text */}
+      <div className="head-logo" onClick={handleAdminClick}
+        style={{ cursor: 'default', userSelect: 'none' }} // Makes it look unclickable
+      >
+        EasyQ's-<span style={{ textDecoration: '' }}>Admin</span>
       </div>
+      <div className="head-win">Finance Window</div>
+    </div>
 
       <div className="button-wrapper">
-        {/* Button for each window */}
-        <button className="btn-1" onClick={() => handleWindowSelection('Window 1')}>
-        <User size={20}/> <span className="wins-label">Window 1 </span>  
-        </button>
-        <button className="btn-2" onClick={() => handleWindowSelection('Window 2')}>
-        <User size={20}/>   Window 2
-        </button>
-        <button className="btn-3" onClick={() => handleWindowSelection('Window 3')}>
-        <User size={20}/>  Window 3
-        </button>
+        {['Window 1', 'Window 2', 'Window 3'].map((window, index) => (
+          <button
+            key={index}
+            className={`btn-${index + 1}`}
+            onClick={() => handleWindowSelection(window)}
+            disabled={loginStatus[window] === 'Active'}
+            style={{
+              backgroundColor: loginStatus[window] === 'Active' ? 'gray' : '',
+              cursor: loginStatus[window] === 'Active' ? 'not-allowed' : 'pointer',
+            }}
+          >
+            {loginStatus[window] === 'Active' ? 'Occupied' : window}
+          </button>
+        ))}
       </div>
     </div>
   );
