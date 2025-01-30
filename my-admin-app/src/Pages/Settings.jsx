@@ -14,6 +14,7 @@ import {
   push,
   remove,
 } from "firebase/database";
+import { UserRoundX } from 'lucide-react';
 
 
 
@@ -165,6 +166,9 @@ function Settings(){
   const [window1Status, setWindow1Status] = useState("Active");
   const [window2Status, setWindow2Status] = useState("Active");
   const [window3Status, setWindow3Status] = useState("Active");
+  const [window1LogStat, setWindow1LogStat] = useState("Active");
+  const [window2LogStat, setWindow2LogStat] = useState("Active");
+  const [window3LogStat, setWindow3LogStat] = useState("Active");
   const [systemStatus, setSystemStatus] = useState("Active");
 
   // Fetch the initial status of the system
@@ -202,6 +206,52 @@ function Settings(){
       setWindow3Status(status);
     });
   }, [db]);
+
+    // Fetch the initial Login status of Window 1
+  useEffect(() => {
+    const window1Stat = ref(db, "QueueSystemStatus/Window1/LoginStatus");
+    onValue(window1Stat, (snapshot) => {
+      const LogStatus = snapshot.val();
+      setWindow1LogStat(LogStatus);
+    });
+  }, [db]);
+
+      // Fetch the initial Login status of Window 2
+      useEffect(() => {
+        const window2Stat = ref(db, "QueueSystemStatus/Window2/LoginStatus");
+        onValue(window2Stat, (snapshot) => {
+          const LogStatus = snapshot.val();
+          setWindow2LogStat(LogStatus);
+        });
+      }, [db]);
+
+          // Fetch the initial Login status of Window 3
+  useEffect(() => {
+    const window3Stat = ref(db, "QueueSystemStatus/Window3/LoginStatus");
+    onValue(window3Stat, (snapshot) => {
+      const LogStatus = snapshot.val();
+      setWindow3LogStat(LogStatus);
+    });
+  }, [db]);
+
+const handleLogStatus = (windowName, currentLogStat) => {
+  const isInactive = currentLogStat === "Inactive";
+  const confirmMsg = window.confirm( ` Are you sure you want to set Login Status of ${windowName} to Unoccupied?`);
+
+
+
+  if(confirmMsg) {
+    const windowLogRef = ref(db, `QueueSystemStatus/${windowName}`);
+
+update(windowLogRef, {LoginStatus: "Inactive"})
+.then(() => {
+  alert(`${windowName} has been set to unoccupied`);
+  
+}
+)
+  }
+
+}
 
   // Function to handle button clicks for toggling statuses
   const handleToggleStatus = (windowName, currentStatus, setStatus) => {
@@ -270,14 +320,52 @@ function Settings(){
     backgroundColor: window1Status === "Active" ? "#e0f7fa" : "#ffcccb" // Light blue for active, light red for inactive
   }}>
   <h2 className="finCard-title">Finance Window 1</h2>
-  <button
-    className="disable"
-    onClick={() =>
-      handleToggleStatus("Window1", window1Status, setWindow1Status)
-    }
+  <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <div
+    onClick={() => handleToggleStatus("Window1", window1Status, setWindow1Status)}
+    style={{
+      border: "1px solid",
+      width: "60px",
+      height: "30px",
+      backgroundColor: window1Status === "Active" ? "green" : "red",
+      borderRadius: "15px",
+      display: "flex",
+      alignItems: "center",
+      padding: "2px",
+      cursor: "pointer",
+      position: "relative",
+      opacity: window1Status === "Inactive" ? 0.6 : 1,
+    }}
   >
-    {window1Status === "Active" ? "Disable" : "Enable"}
-  </button>
+    <div
+      style={{
+        width: "25px",
+        height: "25px",
+        backgroundColor: "white",
+        borderRadius: "50%",
+        position: "absolute",
+        left: window1Status === "Active" ? "32px" : "2px",
+        transition: "left 0.3s ease",
+      }}
+    ></div>
+    </div>
+    </div>
+  <h2 className="finCard-title">Login Status</h2>
+  <button
+  className="disable"
+  style={{
+    backgroundColor: window1LogStat === "Active" ? "red" : "green",
+    color: "white",
+    cursor: window1LogStat === "Inactive" ? "not-allowed" : "pointer",
+    opacity: window1LogStat === "Inactive" ? 0.6 : 1,
+  }}
+  onClick={() => handleLogStatus("Window1", window1LogStat, setWindow1LogStat)}
+  disabled={window1LogStat === "Inactive"}
+>
+  {window1LogStat === "Active" ? "Occupied" : "Unoccupied"}
+</button>
+
+
 </div>
 
 <div className="fin-card1"
@@ -285,14 +373,53 @@ function Settings(){
     backgroundColor: window2Status === "Active" ? "#e0f7fa" : "#ffcccb"
   }}>
   <h2 className="finCard-title">Finance Window 2</h2>
-  <button
-    className="disable"
-    onClick={() =>
-      handleToggleStatus("Window2", window2Status, setWindow2Status)
-    }
+  <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <div
+    onClick={() => handleToggleStatus("Window2", window2Status, setWindow2Status)}
+    style={{
+      border: "1px solid",
+      width: "60px",
+      height: "30px",
+      backgroundColor: window2Status === "Active" ? "green" : "red",
+      borderRadius: "15px",
+      display: "flex",
+      alignItems: "center",
+      padding: "2px",
+      cursor: "pointer",
+      position: "relative",
+      opacity: window2Status === "Inactive" ? 0.6 : 1,
+    }}
   >
-    {window2Status === "Active" ? "Disable" : "Enable"}
-  </button>
+    <div
+      style={{
+        width: "25px",
+        height: "25px",
+        backgroundColor: "white",
+        borderRadius: "50%",
+        position: "absolute",
+        left: window2Status === "Active" ? "32px" : "2px",
+        transition: "left 0.3s ease",
+      }}
+    ></div>
+    </div>
+    </div>
+
+  <h2 className="finCard-title">Login Status</h2>
+  <button
+  className="disable"
+  style={{
+    backgroundColor: window2LogStat === "Active" ? "red" : "green",
+    color: "white",
+    cursor: window2LogStat === "Inactive" ? "not-allowed" : "pointer",
+    opacity: window2LogStat === "Inactive" ? 0.6 : 1,
+  }}
+  onClick={() => handleLogStatus("Window2", window2LogStat, setWindow2LogStat)}
+  disabled={window2LogStat === "Inactive"}
+>
+  {window2LogStat === "Active" ? "Occupied" : "Unoccupied"}
+</button>
+
+
 </div>
 
 <div className="fin-card1"
@@ -300,14 +427,52 @@ function Settings(){
     backgroundColor: window3Status === "Active" ? "#e0f7fa" : "#ffcccb"
   }}>
   <h2 className="finCard-title">Finance Window 3</h2>
-  <button
-    className="disable"
-    onClick={() =>
-      handleToggleStatus("Window3", window3Status, setWindow3Status)
-    }
+  <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <div
+    onClick={() => handleToggleStatus("Window3", window3Status, setWindow3Status)}
+    style={{
+      border: "1px solid",
+      width: "60px",
+      height: "30px",
+      backgroundColor: window3Status === "Active" ? "green" : "red",
+      borderRadius: "15px",
+      display: "flex",
+      alignItems: "center",
+      padding: "2px",
+      cursor: "pointer",
+      position: "relative",
+      opacity: window3Status === "Inactive" ? 0.6 : 1,
+    }}
   >
-    {window3Status === "Active" ? "Disable" : "Enable"}
-  </button>
+    <div
+      style={{
+        width: "25px",
+        height: "25px",
+        backgroundColor: "white",
+        borderRadius: "50%",
+        position: "absolute",
+        left: window3Status === "Active" ? "32px" : "2px",
+        transition: "left 0.3s ease",
+      }}
+    ></div>
+    </div>
+    </div>
+
+  <h2 className="finCard-title">Login Status</h2>
+  <button
+  className="disable"
+  style={{
+    backgroundColor: window3LogStat === "Active" ? "red" : "green",
+    color: "white",
+    cursor: window3LogStat === "Inactive" ? "not-allowed" : "pointer",
+    opacity: window3LogStat === "Inactive" ? 0.6 : 1,
+  }}
+  onClick={() => handleLogStatus("Window3", window3LogStat, setWindow3LogStat)}
+  disabled={window3LogStat === "Inactive"}
+>
+  {window3LogStat === "Active" ? "Occupied" : "Unoccupied"}
+</button>
+
 </div>
 
     </div>

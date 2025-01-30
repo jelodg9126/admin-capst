@@ -78,7 +78,7 @@ const Admin = () => {
         const updatedData = {
           Name: currentAdmin.Name,
           Username: currentAdmin.Username,
-          Password: existingData.Password || "", // Keep old password
+          Password: currentAdmin.Password, // Keep old password
         };
   
         if (currentAdmin.Username !== currentAdmin.originalUsername) {
@@ -231,6 +231,17 @@ const Admin = () => {
           onChange={(e) => setCurrentAdmin({ ...currentAdmin, Username: e.target.value })}
           className="border p-2 rounded w-full"
           placeholder="Enter Username"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-1">Password</label>
+        <input
+          type="password"
+          value={currentAdmin.Password}
+          onChange={(e) => setCurrentAdmin({ ...currentAdmin, Password: e.target.value })}
+          className="border p-2 rounded w-full"
+          placeholder="Enter Password"
         />
       </div>
 
