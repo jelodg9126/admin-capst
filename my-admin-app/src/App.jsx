@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import Dashboard from './Pages/Dashboard';
+import Admin  from  './Pages/Admin';
 import LogAdmin1 from '../../../Win1/admin-capst/my-admin-app/src/Pages/LoginAd1';
 import Dashboard1 from '../../../Win1/admin-capst/my-admin-app/src/Pages/Dashboard1';
 import WindowAd1 from '../../../Win1/admin-capst/my-admin-app/src/Pages/WindowAd1';
@@ -46,6 +47,7 @@ function App() {
         <Route path="/winad2" element={<WindowAd2/>} />
         <Route path="/winad3" element={<WindowAd3/>} /> 
         <Route path="/users" element={<Users />} />
+        <Route path="/admin" element={<Admin />} />
         <Route path="/users1" element={<Users1 />} />
         <Route path="/users2" element={<Users2 />} />
         <Route path="/users3" element={<Users3 />} />

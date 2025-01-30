@@ -24,7 +24,103 @@ import {
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { database } from '../firebase.config';
-import { ref, get, child, onValue } from "firebase/database";
+import { ref, get, child, onValue, remove, set, update } from "firebase/database";
+import { Pencil, Trash } from "lucide-react";
+
+
+
+
+function Users(){
+
+const handleDelete = async (user) => {
+  if (!user || !user.CustomUserId) {
+    console.error("Invalid user data");
+    return;
+  }
+
+    // Show confirmation alert before deleting
+    const confirmDelete = window.confirm(`Are you sure you want to delete ${user.Name}?`);
+    if (!confirmDelete) return; // Stop if user cancels
+
+  const usersRef = ref(database, "users");
+
+  try {
+    // Get all users
+    const snapshot = await get(usersRef);
+    if (!snapshot.exists()) {
+      console.log("No users found.");
+      return;
+    }
+
+    let userKey = null;
+    let userData = null;
+
+    // Loop through users to find the correct Firebase key
+    snapshot.forEach((childSnapshot) => {
+      const userInfo = childSnapshot.val();
+      if (userInfo.CustomUserId === user.CustomUserId) {
+        userKey = childSnapshot.key; // Get the actual Firebase key
+        userData = userInfo;
+      }
+    });
+
+    if (!userKey) {
+      console.log("User not found.");
+      return;
+    }
+
+    // Move user to ArchivedUsers table
+    const archiveRef = ref(database, `ArchivedUsers/${userKey}`);
+    await set(archiveRef, userData);
+
+    // Remove user from Users table
+    await remove(ref(database, `users/${userKey}`));
+
+    console.log(`User ${user.CustomUserId} has been deleted.`);
+    alert(`User ${user.Name} has been deleted.`);
+  } catch (error) {
+    console.error("Error deleting user:", error);
+  }
+};
+
+const handleUpdate = async () => {
+  if (!selectedUser || !selectedUser.CustomUserId) return;
+
+  const usersRef = ref(database, "users");
+
+  try {
+    // Find the correct Firebase key
+    const snapshot = await get(usersRef);
+    if (!snapshot.exists()) {
+      console.log("No users found.");
+      return;
+    }
+
+    let userKey = null;
+
+    snapshot.forEach((childSnapshot) => {
+      const userInfo = childSnapshot.val();
+      if (userInfo.CustomUserId === selectedUser.CustomUserId) {
+        userKey = childSnapshot.key;
+      }
+    });
+
+    if (!userKey) {
+      console.log("User not found.");
+      return;
+    }
+
+    // Update user data in Firebase
+    await update(ref(database, `users/${userKey}`), selectedUser);
+
+    console.log(`User ${selectedUser.CustomUserId} has been updated.`);
+    alert(`User ${selectedUser.Name} has been updated.`);
+
+    setIsEditing(false); // Close modal
+  } catch (error) {
+    console.error("Error updating user:", error);
+  }
+};
 
 
 
@@ -81,14 +177,41 @@ const columns = [
       </span>
     ),
   }),
+
+  columnHelper.accessor("Action", {
+    cell: (info) => (
+      <div className="flex space-x-2">  
+        {/* <button
+          onClick={() => handleEdit(info.row.original)}
+          className="bg-green-600 text-white p-2 rounded-lg hover:bg-green-800 transition"
+        >
+          <Pencil size={18} />
+        </button> */}
+        <button
+  onClick={() => handleDelete(info.row.original)}
+  className="bg-red-600 text-white p-2 rounded-lg hover:bg-red-800 transition"
+>
+  <Trash size={18} />
+</button>
+      </div>
+    ),
+    header: () => <span>Action</span>,
+  }),
 ];
 
 
-function Users(){
+
 
   const [data, setData] = useState([]);
   const [sorting, setSorting] = React.useState([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
+    const [selectedUser, setSelectedUser] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleEdit = (user) => {
+    setSelectedUser(user);  // Store the selected user's data
+    setIsEditing(true);  // Open the edit modal
+  };
 
   const [pagination, setPagination] = React.useState({
       pageIndex: 0,
@@ -227,6 +350,88 @@ function Users(){
                      ))}
                    </select>
                  </div>
+
+                 {isEditing && selectedUser && (
+  <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+      <h2 className="text-xl font-semibold mb-4">Edit User</h2>
+
+      {/* UserID (Read-Only) */}
+      <div className="mb-3">
+        <label className="block text-gray-700">User ID:</label>
+        <input
+          type="text"
+          value={selectedUser.CustomUserId}
+          className="w-full p-2 border rounded bg-gray-200 cursor-not-allowed"
+          disabled
+        />
+      </div>
+
+      {/* Contact Number */}
+      <div className="mb-3">
+        <label className="block text-gray-700">Contact Number:</label>
+        <input
+          type="text"
+          value={selectedUser.Contact_Number}
+          onChange={(e) => setSelectedUser({ ...selectedUser, Contact_Number: e.target.value })}
+          className="w-full p-2 border rounded"
+        />
+      </div>
+
+      {/* Name */}
+      <div className="mb-3">
+        <label className="block text-gray-700">Name:</label>
+        <input
+          type="text"
+          value={selectedUser.Name}
+          onChange={(e) => setSelectedUser({ ...selectedUser, Name: e.target.value })}
+          className="w-full p-2 border rounded"
+        />
+      </div>
+
+      {/* Email */}
+      <div className="mb-3">
+        <label className="block text-gray-700">Email:</label>
+        <input
+          type="email"
+          value={selectedUser.Email}
+          onChange={(e) => setSelectedUser({ ...selectedUser, Email: e.target.value })}
+          className="w-full p-2 border rounded"
+        />
+      </div>
+
+      {/* Verification Status */}
+      <div className="mb-3">
+        <label className="block text-gray-700">Verification Status:</label>
+        <select
+          value={selectedUser.Verification_Status}
+          onChange={(e) => setSelectedUser({ ...selectedUser, Verification_Status: e.target.value })}
+          className="w-full p-2 border rounded"
+        >
+          <option value="Verified">Verified</option>
+          <option value="Not Verified">Not Verified</option>
+        </select>
+      </div>
+
+      {/* Buttons */}
+      <div className="flex justify-end space-x-2">
+        <button
+          onClick={() => setIsEditing(false)}
+          className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-700"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={handleUpdate}
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-800"
+        >
+          Save Changes
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
          
                  <div className="flex items-center space-x-2">
                    <button

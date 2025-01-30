@@ -41,6 +41,10 @@ return(
         <Users size={22} className='sidebar-icons' />
         <span className='sidebar-label'> Users </span></CustomLink>
 
+        <CustomLink className='sidebar-link' href ="/admin" >
+        <Users size={22} className='sidebar-icons' />
+        <span className='sidebar-label'> Admins </span></CustomLink>
+
         <CustomLink className='sidebar-link' href ="/pqs" >
         <CircleEllipsis size={22} className='sidebar-icons' />
         <span className='sidebar-label'> Pending Queues </span></CustomLink>
