@@ -14,6 +14,8 @@ import { database } from '../firebase.config';
 import { ref, get, child, onValue, set, remove, update } from "firebase/database";
 import { Pencil, Trash } from "lucide-react";
 import {toast, ToastContainer} from 'react-toastify'
+import Swal from 'sweetalert2';
+
 
 const Admin = () => {
   const [data, setData] = useState([]);
@@ -47,30 +49,34 @@ const Admin = () => {
 
   // Delete Function (Archive then Delete)
   const handleDelete = async (admin) => {
+    const confirmAction = await Swal.fire({
+        title: 'Confirm Deletion',
+        text: `Are you sure you want to delete ${admin.Name}?`, // Fixed template string
+        icon: 'warning', // Use 'warning' icon for better UI
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel',
+        showCancelButton: true,
+        customClass: {
+            confirmButton: "confirm-button",
+            cancelButton: "cancel-button"
+        }
+    });
 
-     const confirmAction = await Swal.fire({
-                title: 'Confirm Logout',
-                text: 'Are you sure you want to delete ${admin.Name}?',
-                icon: '',
-                confirmButtonText: 'Yes',
-                showCancelButton: true,
-                customClass:{
-                  confirmButton: "confirm-button",
-                  cancelButton: "cancel-button"
-                }
-              })
-    
-       if (!confirmAction.isConfirmed) {
+    // Only delete if the user confirms
+    if (confirmAction.isConfirmed) {
+        const adminRef = ref(database, `admin/${admin.Username}`);
+        const archiveRef = ref(database, `ArchiveEmp/${admin.Username}`);
 
-      const adminRef = ref(database, `admin/${admin.Username}`);
-      const archiveRef = ref(database, `ArchiveEmp/${admin.Username}`);
-
-      set(archiveRef, admin)
-        .then(() => remove(adminRef))
-        .then(() => toast.success("Admin archived successfully!"))
-        .catch((error) => toast.error("Error archiving admin: " + error.message));
+        try {
+            await set(archiveRef, admin); // Move data to archive
+            await remove(adminRef); // Delete original entry
+            toast.success("Admin archived successfully!");
+        } catch (error) {
+            toast.error("Error archiving admin: " + error.message);
+        }
     }
-  };
+};
+
 
   // Edit Function (Opens Modal)
   const handleEdit = (admin) => {

@@ -258,32 +258,36 @@ function Settings(){
     });
   }, [db]);
 
-const handleLogStatus = async (windowName, currentLogStat) => {
-  const isInactive = currentLogStat === "Inactive";
-  const confirmMsg = await Swal.fire({
-    title: 'Confirmation',
-    text: ` Are you sure you want to set Login Status of ${windowName} to Unoccupied?`,
-    icon: '',
-    confirmButtonText: 'Yes',
-    showCancelButton: true,
-    customClass:{
-      confirmButton: "confirm-button",
-      cancelButton: "cancel-button"
-    }
-  })
-  if (confirmAction.isConfirmed) {
-
-    const windowLogRef = ref(db, `QueueSystemStatus/${windowName}`);
-
-update(windowLogRef, {LoginStatus: "Inactive"})
-.then(() => {
-  alert(`${windowName} has been set to unoccupied`);
+  const handleLogStatus = async (windowName, currentLogStat) => {
+    const isInactive = currentLogStat === "Inactive";
   
-}
-)
-  }
-
-}
+    const confirmMsg = await Swal.fire({
+      title: "Confirmation",
+      text: `Are you sure you want to set Login Status of ${windowName} to Unoccupied?`,
+      icon: "warning",  // You forgot the icon type (use "warning", "info", etc.)
+      confirmButtonText: "Yes",
+      showCancelButton: true,
+      cancelButtonText: "No", // Add cancel button text for better UX
+      customClass: {
+        confirmButton: "confirm-button",
+        cancelButton: "cancel-button"
+      }
+    });
+  
+    // ✅ Fix: Use confirmMsg.isConfirmed instead of confirmAction.isConfirmed
+    if (confirmMsg.isConfirmed) {
+      const windowLogRef = ref(db, `QueueSystemStatus/${windowName}`);
+  
+      update(windowLogRef, { LoginStatus: "Inactive" })
+        .then(() => {
+          alert(`${windowName} has been set to unoccupied`);
+        })
+        .catch((error) => {
+          console.error("Error updating status:", error);
+        });
+    }
+  };
+  
 
  
   const handleToggleStatus = async (windowName, currentStatus, setStatus) => {

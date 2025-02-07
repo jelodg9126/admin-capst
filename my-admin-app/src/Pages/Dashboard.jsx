@@ -294,6 +294,28 @@ function Dashboard(){
     fetchData();
   }, []);
 
+  const [totalqueue, setTotalQueue] = useState(0);
+
+  useEffect(() => {
+    const dbRef = ref(database, "queues"); 
+    console.log("Fetching data from 'queues'..."); 
+
+    const unsubscribe = onValue(dbRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        console.log("Database Data:", data); 
+        setTotalQueue(Object.keys(data).length); 
+      } else {
+        console.log("No data found in 'queues'");
+        setTotalQueue(0);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [database]);
+
+
+
   const columnHelper = createColumnHelper();
 
 const columns = [
@@ -518,15 +540,22 @@ const columns = [
 
     return(
    <>
-     <Sidebar/>
+<Sidebar/>
      <div className="d-container">
+
       <div className="d-heading">
         <div className="name">
          <h4>Welcome, Main Admin!</h4>
          <h5 className="dash-date">{dbdate}</h5>
          </div>
+
+        <div>
             <div className="time">{time}</div>
+            <h5> Pending Queues: {totalqueue}</h5>
+</div>
+
       </div>
+      
        <hr/>
   <div className="d-content">
      <div className="topDiv-header">Visitor Analytics</div>

@@ -18,18 +18,20 @@ function AddAccount() {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (Apassword !== confirmPassword) {
       toast.warn("Passwords do not match.");
       return;
     }
+  
     if (!/^(?=.*[A-Za-z])(?=.*[A-Z]).{8,}$/.test(Apassword)) {
-      setResponse(
-        "Password must be at least 8 characters long, with at least one letter and one uppercase letter."
-      );
+      toast.warn("Password must be at least 8 characters long, with at least one letter and one uppercase letter.");
       return;
     }
-
+  
+    console.log("Validation Passed. Proceeding with registration...");
+  
+  
     try {
       // Check if the username already exists in the database
       const dbRef = ref(database);
