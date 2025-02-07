@@ -3,6 +3,8 @@ import { auth, database } from '../firebase.config.js';
 import { ref, set, get, child } from 'firebase/database';
 import Sidebar from '../components/sidebar.jsx';
 
+import { ToastContainer, toast } from 'react-toastify';
+
 
 
 function AddAccount() {
@@ -18,7 +20,7 @@ function AddAccount() {
     e.preventDefault();
 
     if (Apassword !== confirmPassword) {
-      setResponse("Passwords do not match.");
+      toast.warn("Passwords do not match.");
       return;
     }
     if (!/^(?=.*[A-Za-z])(?=.*[A-Z]).{8,}$/.test(Apassword)) {
@@ -71,9 +73,16 @@ function AddAccount() {
     <div className="d-container">
     <div className="d-head">
          <h4>Admin Registration</h4>
-         <hr/>
       </div>
+      <hr/>
+
+
+    
       <div className="reg-cont">
+        <div className="addAdmin-header">
+      <h2 className='addAcc-header'>Employee Add Account</h2>
+      <p className='addAcc-descript'>Register New Admin </p>
+      </div>
          <div className="addAcc-card">
         <div className="credWrap">
           <p className="creds">Username</p>
@@ -94,16 +103,13 @@ function AddAccount() {
           <p className="creds">Confirm Password</p>
           <input type="password" className="addAcc-input" id="confirmPassword" name="confirmPassword" placeholder='********' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
           </div>
+         <div className="btnz">
+          <button type="submit" className="addAcc-btn" id="signupBtn" onClick={handleSubmit}>
+         Sign Up
+        </button>
+  </div>
           </div>
-
-          <form onSubmit={handleSubmit}>
-  <button type="submit" className="addAcc-btn" id="signupBtn">
-    Sign Up
-  </button>
-</form>
-
-      
-        {response && <div id="response">{response}</div>}
+     <ToastContainer position='top-center'/>
 
       </div>
       </div>

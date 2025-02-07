@@ -62,10 +62,10 @@
     flex-direction: column;
     gap: .5rem;
 }
-.visit-card{
+.Mvisit-Card{
     border: 1px solid #c7c7c7;
     border-radius: 10px;
-    padding:23.5px 50px 20px 25px;
+    padding:23px 65px 28px 30px;
     background-color: rgb(255, 255, 255);
 }
 
@@ -88,7 +88,7 @@
     color: #1C2E8B;
 }
 
-.bar-card {
+.Mbar-Card {
     flex: 1;
     background: #ffffff;
     border: 1px solid #c7c7c7;
@@ -98,13 +98,13 @@
     height: 300px; 
   }
   
-  .bar-card canvas {
+  .Mbar-card canvas {
     width: 100% !important; 
     height: 100% !important;
   }
-.student-dept{
+.Mvisitors-month{
   width: 85%;
-  height: 17rem;
+  height: 18rem;
 }
 
 
@@ -155,6 +155,9 @@
     }
 }
 
+@media only screen and (max-width: 661px) {
+  
+}
 @media only screen and (max-width: 955px) {
     .sidebar-container{
       width: 10%;

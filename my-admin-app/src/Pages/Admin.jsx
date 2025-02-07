@@ -13,6 +13,7 @@ import React, { useEffect, useState } from "react";
 import { database } from '../firebase.config';
 import { ref, get, child, onValue, set, remove, update } from "firebase/database";
 import { Pencil, Trash } from "lucide-react";
+import {toast, ToastContainer} from 'react-toastify'
 
 const Admin = () => {
   const [data, setData] = useState([]);
@@ -45,15 +46,29 @@ const Admin = () => {
   }, []);
 
   // Delete Function (Archive then Delete)
-  const handleDelete = (admin) => {
-    if (window.confirm(`Are you sure you want to delete ${admin.Name}?`)) {
+  const handleDelete = async (admin) => {
+
+     const confirmAction = await Swal.fire({
+                title: 'Confirm Logout',
+                text: 'Are you sure you want to delete ${admin.Name}?',
+                icon: '',
+                confirmButtonText: 'Yes',
+                showCancelButton: true,
+                customClass:{
+                  confirmButton: "confirm-button",
+                  cancelButton: "cancel-button"
+                }
+              })
+    
+       if (!confirmAction.isConfirmed) {
+
       const adminRef = ref(database, `admin/${admin.Username}`);
       const archiveRef = ref(database, `ArchiveEmp/${admin.Username}`);
 
       set(archiveRef, admin)
         .then(() => remove(adminRef))
-        .then(() => alert("Admin archived successfully!"))
-        .catch((error) => alert("Error archiving admin: " + error.message));
+        .then(() => toast.success("Admin archived successfully!"))
+        .catch((error) => toast.error("Error archiving admin: " + error.message));
     }
   };
 
@@ -90,13 +105,13 @@ const Admin = () => {
           await update(oldAdminRef, updatedData);
         }
   
-        alert("Admin updated successfully!");
+        toast.success("Admin updated successfully!");
         setIsEditModalOpen(false);
       } else {
-        alert("Admin record not found!");
+        toast.warn("Admin record not found!");
       }
     } catch (error) {
-      alert("Error updating admin: " + error.message);
+       toast.error("Error updating admin: " + error.message);
     }
   };
   
@@ -107,6 +122,7 @@ const Admin = () => {
       header: () => (
         <span className="flex items-center">
           <User className="mr-2" size={16} /> Name
+          <ArrowUpDown className="ml-2" size={14} />
         </span>
       ),
     }),
@@ -115,13 +131,14 @@ const Admin = () => {
       header: () => (
         <span className="flex items-center">
           <Mail className="mr-2" size={16} /> Username
+           <ArrowUpDown className="ml-2" size={14} />
         </span>
       ),
     }),
     
     columnHelper.accessor("Action", {
       cell: (info) => (
-        <div className="flex space-x-2">
+        <div className="space-x-2">
           <button
             onClick={() => handleEdit(info.row.original)}
             className="bg-green-600 text-white p-2 rounded-lg hover:bg-green-800 transition"
@@ -161,7 +178,7 @@ const Admin = () => {
         <div className="p-7 border border-solid">
           <h2 className="font-nobile text-[#1c2e8b] text-3xl font-medium">Employee Record</h2>
         </div>
-        <div className="flex flex-col min-h-full py-12 px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col min-h-full py-6 px-4 mx-auto sm:px-6 lg:px-8">
           {/* Search Bar */}
           <div className="mb-4 relative">
             <input
@@ -180,10 +197,10 @@ const Admin = () => {
                 {table.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
-                      <th key={header.id} className="text-center p-3 border text-xs font-medium text-blue-800 uppercase tracking-wider">
+                      <th key={header.id} className="text-center p-3 px-24 border text-xs font-medium text-blue-800 uppercase tracking-wider">
                         <div onClick={header.column.getToggleSortingHandler()} className="cursor-pointer select-none flex items-center">
                           {flexRender(header.column.columnDef.header, header.getContext())}
-                          <ArrowUpDown className="ml-2" size={14} />
+                         
                         </div>
                       </th>
                     ))}
@@ -262,6 +279,7 @@ const Admin = () => {
     </div>
   </div>
 )}
+<ToastContainer/>
     </>
   );
 };

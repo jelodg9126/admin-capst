@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { database } from '../firebase.config';
 import { ref, onValue } from 'firebase/database';
+import { User } from 'lucide-react'
 
 function Wins() {
   const navigate = useNavigate();
@@ -90,7 +91,8 @@ function Wins() {
       >
         EasyQ's-<span style={{ textDecoration: '' }}>Admin</span>
       </div>
-      <div className="head-win">Finance Window</div>
+      <div className="head-win">
+      Finance Window</div>
     </div>
 
       <div className="button-wrapper">
@@ -104,7 +106,7 @@ function Wins() {
               backgroundColor: loginStatus[window] === 'Active' ? 'gray' : '',
               cursor: loginStatus[window] === 'Active' ? 'not-allowed' : 'pointer',
             }}
-          >
+          >  <User size={20}/>
             {loginStatus[window] === 'Active' ? 'Occupied' : window}
           </button>
         ))}

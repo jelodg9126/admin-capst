@@ -124,7 +124,7 @@ function LogHis({ database }) {
           <h4 className="text-[28px] font-['Noto sans'] font-[600]">Login History</h4>
         </div>
         <hr/>
-        <div className="flex flex-col min-h-full max-xl:-4xl py-12 px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col min-h-full max-xl:-4xl py-6 px-4 sm:px-6 lg:px-8">
           {/* Search Bar */}
           <div className="mb-4 relative">
             <input

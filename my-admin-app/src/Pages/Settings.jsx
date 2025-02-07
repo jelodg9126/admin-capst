@@ -15,6 +15,9 @@ import {
   remove,
 } from "firebase/database";
 import { UserRoundX } from 'lucide-react';
+import '../components/settings.css'
+import Swal from 'sweetalert2'
+import { ToastContainer, toast } from 'react-toastify';
 
 
 
@@ -62,11 +65,27 @@ function Settings(){
 
     //code sa pagreset ng daily queue record
   const today = new Date().toISOString().split("T")[0];
+
   const handleResetDaily = async () => {
     try {
       const dailyRef = ref(database, "daily_queue_number_counter");
       const completedQueuesRef = ref(database, "CompletedQueues");
       const dailyRecordRef = ref(database, `DailyQueueRecord/${today}`);
+
+      const resetDaily = await Swal.fire({
+        title: 'Reset Daily Queue Number Counter?',
+        text: 'Current Queue Number Counter will be saved to Daily Queue Record.',
+        icon: '',
+        confirmButtonText: 'Yes',
+        showCancelButton: true,
+        customClass:{
+          confirmButton: "confirm-button",
+          cancelButton: "cancel-button"
+        }
+      })
+      if(!resetDaily.isConfirmed){
+      return;
+      }
   
       // 1. Get the current daily_queue_number_counter value
       const dailySnapshot = await get(dailyRef);
@@ -95,10 +114,7 @@ function Settings(){
         });
       }
 
-      const resetDaily = window.confirm('Reset Daily Queue Number Counter? Current Queue Number Counter will be saved to Daily Queue Record.')
-      if(!resetDaily){
-      return;
-      }
+      
   
       // 3. Create the DailyQueueRecord entry
       await set(dailyRecordRef, {
@@ -110,10 +126,10 @@ function Settings(){
       // 4. Reset daily_queue_number_counter to 0
       await set(dailyRef, 0);
   
-      alert("Daily Queue Record has been retrieved and counter has been reset successfully!");
+      toast("Daily Queue Record has been retrieved and counter has been reset successfully!");
     } catch (error) {
       console.error("Error resetting daily queue:", error);
-      alert("Failed to reset daily queue. Please try again.");
+       toast("Failed to reset daily queue. Please try again.");
     }
   };
 
@@ -126,9 +142,6 @@ function Settings(){
     const currentMonth = currentDate.toLocaleString("default", { month: "long" }); // e.g., "January"
     const currentYear = currentDate.getFullYear();
     const monthId = `${currentMonth}-${currentYear}`; // e.g., "January-2025"
-
-  
-
   
     try {
       // Step 1: Retrieve the current value of monthly_queue_number_counter
@@ -138,8 +151,18 @@ function Settings(){
       if (counterSnapshot.exists()) {
         const counterValue = counterSnapshot.val(); // Get the counter value
         
-        const confirmReset = window.confirm("Reset Monthly Queue Number Counter? Current Queue Number Counter will be saved to Monthly Queue Record.")
-         if (!confirmReset){
+        const confirmReset = await Swal.fire({
+          title: 'Reset Monthly Queue Number Counter? ',
+          text: 'Current Queue Number Counter will be saved to Monthly Queue Record.',
+          icon: '',
+          confirmButtonText: 'Yes',
+          showCancelButton: true,
+          customClass:{
+            confirmButton: "confirm-button",
+            cancelButton: "cancel-button"
+          }
+        })
+         if (!confirmReset.isConfirmed){
             return;
          }
   
@@ -170,6 +193,7 @@ function Settings(){
   const [window2LogStat, setWindow2LogStat] = useState("Active");
   const [window3LogStat, setWindow3LogStat] = useState("Active");
   const [systemStatus, setSystemStatus] = useState("Active");
+  const [cutoffStatus, setCutoffStatus] = useState("Active");
 
   // Fetch the initial status of the system
   useEffect(() => {
@@ -225,7 +249,7 @@ function Settings(){
         });
       }, [db]);
 
-          // Fetch the initial Login status of Window 3
+   
   useEffect(() => {
     const window3Stat = ref(db, "QueueSystemStatus/Window3/LoginStatus");
     onValue(window3Stat, (snapshot) => {
@@ -234,13 +258,21 @@ function Settings(){
     });
   }, [db]);
 
-const handleLogStatus = (windowName, currentLogStat) => {
+const handleLogStatus = async (windowName, currentLogStat) => {
   const isInactive = currentLogStat === "Inactive";
-  const confirmMsg = window.confirm( ` Are you sure you want to set Login Status of ${windowName} to Unoccupied?`);
+  const confirmMsg = await Swal.fire({
+    title: 'Confirmation',
+    text: ` Are you sure you want to set Login Status of ${windowName} to Unoccupied?`,
+    icon: '',
+    confirmButtonText: 'Yes',
+    showCancelButton: true,
+    customClass:{
+      confirmButton: "confirm-button",
+      cancelButton: "cancel-button"
+    }
+  })
+  if (confirmAction.isConfirmed) {
 
-
-
-  if(confirmMsg) {
     const windowLogRef = ref(db, `QueueSystemStatus/${windowName}`);
 
 update(windowLogRef, {LoginStatus: "Inactive"})
@@ -253,49 +285,107 @@ update(windowLogRef, {LoginStatus: "Inactive"})
 
 }
 
-  // Function to handle button clicks for toggling statuses
-  const handleToggleStatus = (windowName, currentStatus, setStatus) => {
+ 
+  const handleToggleStatus = async (windowName, currentStatus, setStatus) => {
     const isDisabling = currentStatus === "Active";
     const confirmMessage = isDisabling
       ? `Are you sure you want to disable ${windowName}?`
       : `Do you want to enable ${windowName}?`;
-    const confirmAction = window.confirm(confirmMessage);
-  
-    if (confirmAction) {
+    const confirmAction = await Swal.fire({
+      title: 'Confirmation',
+      text: confirmMessage,
+      icon: '',
+      confirmButtonText: 'Yes',
+      showCancelButton: true,
+      customClass:{
+        confirmButton: "confirm-button",
+        cancelButton: "cancel-button"
+      }
+    })
+    if (confirmAction.isConfirmed) {
       const windowRef = ref(db, `QueueSystemStatus/${windowName}`);
       const newStatus = isDisabling ? "Inactive" : "Active";
   
       update(windowRef, { Status: newStatus })
         .then(() => {
-          alert(`${windowName} has been ${newStatus === "Inactive" ? "disabled" : "enabled"}.`);
+          toast(`${windowName} has been ${newStatus === "Inactive" ? "disabled" : "enabled"}.`);
           setStatus(newStatus);
         })
         .catch((error) => {
           console.error(`Error updating ${windowName} status:`, error);
-          alert(`Failed to update ${windowName} status. Please try again.`);
+          toast(`Failed to update ${windowName} status. Please try again.`);
         });
     }
   };
 
-  const handleToggleSystemStatus = () => {
+  const handleToggleCutOffStatus = async () => {
+    const isCuttoff = cutoffStatus === "Active";
+    const confirmMessage = isCuttoff
+      ?  "Cut off time is lifted after confirmation"
+      : "Cut off time will set.";
+    const confirmTitle = isCuttoff
+       ? "Disable Cut off?"
+       : "Cut off"
+     const confirmAction = await Swal.fire({
+      title: confirmTitle,
+      text: confirmMessage,
+      icon: '',
+      confirmButtonText: 'Yes',
+      showCancelButton: true,
+      customClass:{
+        confirmButton: "confirm-button",
+        cancelButton: "cancel-button"
+      }
+    })
+  
+    if (confirmAction.isConfirmed) {
+      const systemRef = ref(db, "QueueSystemStatus/CutOffStatus");
+      const newStatus = isCuttoff? "Inactive" : "Active";
+  
+      set(systemRef, newStatus)
+        .then(() => {
+          toast(`Cutoff ${newStatus === "Inactive" ? "disabled" : "enabled"}.`);
+          setCutoffStatus(newStatus);
+        })
+        .catch((error) => {
+          console.error("Error updating system status:", error);
+          toast.warn("Failed to update system status. Please try again.");
+        });
+    }
+  };
+
+  const handleToggleSystemStatus = async () => {
     const isDisabling = systemStatus === "Active";
     const confirmMessage = isDisabling
-      ? "Are you sure you want to disable the entire system? This will shut down the whole finance system."
-      : "Do you want to enable the system again?";
-    const confirmAction = window.confirm(confirmMessage);
+      ? "This will shut down the whole finance system."
+      : "System operations will continue after confirmation";
+    const confirmTitle = isDisabling
+       ? "Are you sure you want to disable the entire system?"
+       : "Do you want to enable the system again?"
+     const confirmAction = await Swal.fire({
+      title: confirmTitle,
+      text: confirmMessage,
+      icon: '',
+      confirmButtonText: 'Yes',
+      showCancelButton: true,
+      customClass:{
+        confirmButton: "confirm-button",
+        cancelButton: "cancel-button"
+      }
+    })
   
-    if (confirmAction) {
+    if (confirmAction.isConfirmed) {
       const systemRef = ref(db, "QueueSystemStatus/Status");
       const newStatus = isDisabling ? "Inactive" : "Active";
   
       set(systemRef, newStatus)
         .then(() => {
-          alert(`The system has been ${newStatus === "Inactive" ? "disabled" : "enabled"}.`);
+          toast(`The system has been ${newStatus === "Inactive" ? "disabled" : "enabled"}.`);
           setSystemStatus(newStatus);
         })
         .catch((error) => {
           console.error("Error updating system status:", error);
-          alert("Failed to update system status. Please try again.");
+          toast.warn("Failed to update system status. Please try again.");
         });
     }
   };
@@ -315,81 +405,46 @@ update(windowLogRef, {LoginStatus: "Inactive"})
         <div className="Fin-section">Finance Window</div>
         <div className="settings-container">
           <div className="finCard-wrapper">
-          <div className="fin-card1"
-  style={{
-    backgroundColor: window1Status === "Active" ? "#e0f7fa" : "#ffcccb" // Light blue for active, light red for inactive
-  }}>
+
+  <div className="fin1-wrapper">
+ <div className="fin-card1" style={{ backgroundColor: window1Status === "Active" ? "#5366C8" : "#ffcccb" }}>
   <h2 className="finCard-title">Finance Window 1</h2>
   <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-  <div
-    onClick={() => handleToggleStatus("Window1", window1Status, setWindow1Status)}
-    style={{
-      border: "1px solid",
-      width: "60px",
-      height: "30px",
-      backgroundColor: window1Status === "Active" ? "green" : "red",
-      borderRadius: "15px",
-      display: "flex",
-      alignItems: "center",
-      padding: "2px",
-      cursor: "pointer",
-      position: "relative",
-      opacity: window1Status === "Inactive" ? 0.6 : 1,
-    }}
-  >
-    <div
+    
+
+<div className={`finCard-toggle ${window1Status === 'Active' ? 'active' : 'inactive'}`}
+        onClick={() => handleToggleStatus("Window1", window1Status, setWindow1Status)}>
+    <div className="finCard-circle"
       style={{
-        width: "25px",
-        height: "25px",
-        backgroundColor: "white",
-        borderRadius: "50%",
-        position: "absolute",
         left: window1Status === "Active" ? "32px" : "2px",
-        transition: "left 0.3s ease",
-      }}
-    ></div>
-    </div>
-    </div>
-  <h2 className="finCard-title">Login Status</h2>
-  <button
-  className="disable"
-  style={{
-    backgroundColor: window1LogStat === "Active" ? "red" : "green",
-    color: "white",
-    cursor: window1LogStat === "Inactive" ? "not-allowed" : "pointer",
-    opacity: window1LogStat === "Inactive" ? 0.6 : 1,
-  }}
-  onClick={() => handleLogStatus("Window1", window1LogStat, setWindow1LogStat)}
-  disabled={window1LogStat === "Inactive"}
->
-  {window1LogStat === "Active" ? "Occupied" : "Unoccupied"}
-</button>
+      }}/>
 
-
+      </div>
+    </div>
 </div>
 
+<div className="status-cont">
+  <h2 className="finCard-status">Status:</h2>
+  <button className="disable"
+  style={{ backgroundColor: window1LogStat === "Active" ? "#5366C8" : "green",
+    color: "white", cursor: window1LogStat === "Inactive" ? "not-allowed" : "pointer",
+    opacity: window1LogStat === "Inactive" ? 0.6 : 1,}}
+  onClick={() => handleLogStatus("Window1", window1LogStat, setWindow1LogStat)}
+  disabled={window1LogStat === "Inactive"}>
+  {window1LogStat === "Active" ? "Occupied" : "Unoccupied"}
+</button>
+</div>
+
+</div>
+<div className="fin1-wrapper">
 <div className="fin-card1"
   style={{
-    backgroundColor: window2Status === "Active" ? "#e0f7fa" : "#ffcccb"
+    backgroundColor: window2Status === "Active" ? "#5366C8" : "#ffcccb"
   }}>
   <h2 className="finCard-title">Finance Window 2</h2>
   <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-  <div
-    onClick={() => handleToggleStatus("Window2", window2Status, setWindow2Status)}
-    style={{
-      border: "1px solid",
-      width: "60px",
-      height: "30px",
-      backgroundColor: window2Status === "Active" ? "green" : "red",
-      borderRadius: "15px",
-      display: "flex",
-      alignItems: "center",
-      padding: "2px",
-      cursor: "pointer",
-      position: "relative",
-      opacity: window2Status === "Inactive" ? 0.6 : 1,
-    }}
-  >
+  <div className={`finCard-toggle ${window2Status === 'Active' ? 'active' : 'inactive'}`}
+        onClick={() => handleToggleStatus("Window2", window2Status, setWindow2Status)}>
     <div
       style={{
         width: "25px",
@@ -403,8 +458,10 @@ update(windowLogRef, {LoginStatus: "Inactive"})
     ></div>
     </div>
     </div>
+</div>
 
-  <h2 className="finCard-title">Login Status</h2>
+<div className="status-cont">
+  <h2 className="finCard-status">Status:</h2>
   <button
   className="disable"
   style={{
@@ -418,32 +475,18 @@ update(windowLogRef, {LoginStatus: "Inactive"})
 >
   {window2LogStat === "Active" ? "Occupied" : "Unoccupied"}
 </button>
-
-
+</div>
 </div>
 
+<div className="fin1-wrapper">
 <div className="fin-card1"
   style={{
-    backgroundColor: window3Status === "Active" ? "#e0f7fa" : "#ffcccb"
+    backgroundColor: window3Status === "Active" ? "#5366C8" : "#ffcccb"
   }}>
   <h2 className="finCard-title">Finance Window 3</h2>
   <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-  <div
-    onClick={() => handleToggleStatus("Window3", window3Status, setWindow3Status)}
-    style={{
-      border: "1px solid",
-      width: "60px",
-      height: "30px",
-      backgroundColor: window3Status === "Active" ? "green" : "red",
-      borderRadius: "15px",
-      display: "flex",
-      alignItems: "center",
-      padding: "2px",
-      cursor: "pointer",
-      position: "relative",
-      opacity: window3Status === "Inactive" ? 0.6 : 1,
-    }}
-  >
+  <div className={`finCard-toggle ${window3Status === 'Active' ? 'active' : 'inactive'}`}
+        onClick={() => handleToggleStatus("Window3", window3Status, setWindow3Status)}>
     <div
       style={{
         width: "25px",
@@ -457,10 +500,12 @@ update(windowLogRef, {LoginStatus: "Inactive"})
     ></div>
     </div>
     </div>
+   
+</div>
 
-  <h2 className="finCard-title">Login Status</h2>
-  <button
-  className="disable"
+<div className="status-cont">
+  <h2 className="finCard-status">Status:</h2>
+  <button className="disable"
   style={{
     backgroundColor: window3LogStat === "Active" ? "red" : "green",
     color: "white",
@@ -472,8 +517,8 @@ update(windowLogRef, {LoginStatus: "Inactive"})
 >
   {window3LogStat === "Active" ? "Occupied" : "Unoccupied"}
 </button>
-
-</div>
+  </div>
+  </div>
 
     </div>
 
@@ -507,18 +552,43 @@ update(windowLogRef, {LoginStatus: "Inactive"})
         <div className="Fin-section">System</div>
 
         <div className="system-wrapper">
+
             <div className="system-card">
+
+              <div className="CutOff-wrapper">
+              <h5 className="tittle"> Cut-off Time </h5>
+              <p className="tit-descrip">
+                 Getting queues will be disabled when it reaches cut-off time.
+              </p>
+              </div>
+
+            <div className="CutOffBtn-container">
+            <button className={`cutoff-btn ${cutoffStatus === "Active" ? "Disable" : "Enable"}`}
+            onClick={handleToggleCutOffStatus}> {cutoffStatus=== "Active" ? "Disable" : "Enable"}
+            </button>
+            </div>
+            </div>
+  
+            
+            <div className="system-card">
+
+              <div className="shutdown-wrapper">
               <h5 className="tittle"> Shut off System </h5>
               <p className="tit-descrip">
                 This will affect all the finance queues and records. Please ensure that
                 this must <br /> be done during break times and after working hours.
               </p>
-            </div>
-            <button className="shutoff-btn" onClick={handleToggleSystemStatus}>
+              </div>
+
+            <div className="shutBtn-container">
+            <button className={`shutoff-btn ${systemStatus === "Active" ? "Disable" : "Enable"}`} onClick={handleToggleSystemStatus}>
               {systemStatus === "Active" ? "Disable" : "Enable"}
             </button>
-          </div>
-        
+            </div>
+            </div>
+    </div>
+    
+         <ToastContainer position="top-center"/>
     </div>
   </div>
      </>

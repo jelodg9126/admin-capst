@@ -37,24 +37,68 @@
     display: flex;
     justify-content: space-evenly;
     padding: 12px;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
+
+
 
 .fin-card1{
     align-items: center;
     border: 1px solid gray;
-    border-radius: 12px;
-    padding: 30px 35px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    padding: 30px 55px;
     text-align: center;
     box-shadow: 2px 2px 2px rgb(217, 215, 215);
+}
+
+.toggle-container {
+    display: "flex";
+    justify-content: "center";
+    align-items: "center";
 }
 
 .finCard-title{
     font-family: 'Noto sans', sans-serif;
     font-weight: 450;
     font-size: 25px;
-    color: #1C2E8B;
+    color: #fff;
     margin-bottom: 8px;
 }
+
+
+.finCard-toggle{
+    border: 1px solid;
+    width: 60px;
+    height: 30px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    cursor: pointer;
+    position: relative;
+}
+
+.finCard-toggle.active{
+    background-color: green;
+    transition: 0.3s ease;
+}
+
+.finCard-toggle.inactive{
+    background-color: red;
+    transition: 0.3s ease;
+}
+
+.finCard-circle{
+    width: 25px;
+    height: 25px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    transition: left 0.3s ease;
+}
+
 
 .disable{
     border: 1px solid black;
@@ -62,23 +106,44 @@
     border-radius: 12px;
     color: #1C2E8B;
     background-color: #ffff;
-    margin-top: 12px;
+}
+
+.status-cont{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #C3C3C3;
+    border: 1px solid rgb(161, 159, 159);
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    padding: 12px;
+    box-shadow: 2px 2px 2px rgb(217, 215, 215);
+}
+
+.finCard-status{
+    font-family: 'Noto sans';
+    color: #1C2E8B;
+    font-weight: 100;
+    font-size: 1.2rem;
 }
 
 .dashCard-wrapper{
     display: flex;
     justify-content: center;
     gap: 5rem;
-    padding: 12px
+    padding: 12px;
+    flex-wrap: wrap;
 }
 
 .dash-card1{
-    border: 1px solid gray;
+    border: 1px solid rgb(185, 183, 183);
     border-radius: 12px;
     padding: 20px 60px;
     text-align: center;
     box-shadow: 2px 2px 2px rgb(217, 215, 215);
 }
+
+
 
 .Svisit-header{
     font-family: 'Noto sans', sans-serif;
@@ -97,10 +162,12 @@
 
 
 .btnResetDaily, .btnResetMonthly{
-    border: 1px solid black;
-    border-radius: 12px;
+    border: 1px solid gainsboro;
+    border-radius: 20px;
     padding: 10px 55px;
-    color: #1C2E8B;
+    background-color: #5366C8;
+    color: #ffffff;
+    box-shadow: 2px 2px 2px rgb(215, 215, 215);
 }
 
 .system-wrapper{
@@ -108,9 +175,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8rem;
+    gap: 2rem;
     padding: 20px 20px 30px ;
     margin: 0px auto;
+    flex-wrap: wrap
 }
 
 .tittle{
@@ -120,14 +188,86 @@
 }
 
 .tit-descrip{
-  color: #1C2E8B;
+  color: #7e808a;
   font-weight: 350;
   font-size: 18px;
 }
 
 .shutoff-btn{
-    border: 1px solid;
-    color: #1C2E8B;
+    border: 1px solid #1C2E8B;
+    color: #fff;
     padding: 10px 50px;
+    border-radius: 20px;
+    box-shadow: 2px 2px 2px rgb(215, 215, 215);
+}
+
+.shutoff-btn.Disable{
+    background-color: #1C2E8B;
+}
+
+.confirm-button {
+    padding: 12px 50px; 
+    font-size: 18px;
+    margin-right: 10px;
+    background-color: #1C2E8B;
+    color:#fff;
+  }
+  
+  .cancel-button{
+    padding: 12px 30px;
+    background-color: #fff;
+    font-size: 18px;
+    border: 1px solid #1C2E8B;
+    color: #1C2E8B;
+  }
+  
+  .swal2-popup .swal2-styled:focus {
+    box-shadow: none !important;
+  }
+
+  .status-cont{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .system-card{
+    display: flex;
+    align-items: center;
+    gap: 5rem;
+    border: 1px solid rgb(188, 185, 185);
+    padding: 30px 80px;
     border-radius: 12px;
+    flex-wrap: wrap;
+    box-shadow: 2px 2px 2px rgb(217, 215, 215);
+  }
+
+  .cutoff-btn{
+    border: 1px solid gray;
+    color: white;
+    padding: 10px 50px;
+    border-radius: 20px;
+    box-shadow: 2px 2px 2px rgb(215, 215, 215);
+}
+
+.cutoff-btn.Disable{
+    background-color: #1c8b53;
+}
+
+.cutoff-btn.Enable{
+    background-color: rgb(54, 47, 154);
+}
+
+  @media only screen and (max-width: 1145px) {
+    .Swin-container{
+        width: 90%;
+    }
+    .finCard-wrapper{
+        display: flex;
+        gap: 2rem;
+  }
+}
+
+  @media only screen and (max-width: 1024px) {
+   
 }

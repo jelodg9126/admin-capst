@@ -1,7 +1,6 @@
 import { Chart as ChartJS, defaults } from "chart.js/auto"
 import Sidebar from "../components/sidebar"
 import { Bar, Doughnut } from "react-chartjs-2"
-import sourceData from "../sourceData.json"
 import {
   createColumnHelper,
   flexRender,
@@ -30,20 +29,15 @@ import {
   CircleX, 
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import tableData from "../tableData.json"
 import { database } from '../firebase.config';
 import { ref, get, child, set, query, orderByChild, equalTo, update, onValue } from "firebase/database";
+import '../components/dashboard.css'
 
 
-
-
-
-//code sa bargraph
 function BarChart({ database }) {
   const [sourceData, setSourceData] = useState([]);
 
   useEffect(() => {
-    // Reference to the MonthlyQueueRecord table
     const dbRef = ref(database, "MonthlyQueueRecord");
     // Listen for real-time updates from the database
     const unsubscribe = onValue(dbRef, (snapshot) => {
@@ -77,7 +71,7 @@ function BarChart({ database }) {
     return () => unsubscribe();
   }, [database]);
   return (
-    <div className="bar-card student-dept">
+    <div className="Mbar-Card Mvisitors-month">
       <Bar
         data={{
           labels: sourceData.map((data) => data.label),
@@ -191,11 +185,11 @@ function DoughnutChart({ database }) {
               label: "Number of Visitors",
               data: sourceData.map((data) => data.value),
               backgroundColor: [
-                "#FF6384", // Red
-                "#36A2EB", // Blue
-                "#FFCE56", // Yellow
-                "#4BC0C0", // Teal
-                "#9966FF", // Purple
+                "#FF6384", 
+                "#36A2EB", 
+                "#FFCE56", 
+                "#4BC0C0", 
+                "#9966FF", 
               ],
               borderColor: [
                 "#FF6384",
@@ -534,22 +528,24 @@ const columns = [
             <div className="time">{time}</div>
       </div>
        <hr/>
-     <div className="d-content">
-     <div className="topDiv-header">Analytics</div>
+  <div className="d-content">
+     <div className="topDiv-header">Visitor Analytics</div>
       <div className="topdiv">
-     <div className="visit-wrapper">
-      <div className="visit-card">
-         <h3 className="visit-header">Visitors Today</h3>
-         <h1 className="visitor-count">{visitorCount}</h1>
 
+      <div className="visit-wrapper">
+
+       <div className="Mvisit-Card">
+         <h3 className="visit-header"> Visitors Today</h3>
+         <h1 className="visitor-count">{visitorCount}</h1>
        </div>
 
-       <div className="visit-card">
-         <h3 className="visit-header">This Month</h3>
+       <div className="Mvisit-Card">
+         <h3 className="visit-header"> This Month</h3>
          <h1 className="mos-visitor">{monthlyVisitorCount}</h1>
-        
       </div>
+
       </div>
+
       <BarChart database={database} />
       </div>
       </div>
@@ -694,7 +690,7 @@ const columns = [
 
       <div className="table-header2"> Transaction History</div>
   
-      <div className="flex flex-col min-h-full max-xl:-4xl py-3 px-4 sm:px-6 lg:px-8">
+      <div className="flex flex-col min-h-fit max-xl:-4xl pb-8 px-4 sm:px-6 lg:px-8">
       <div className="mb-4 relative">
         <input
           value={globalFilter ?? ""}

@@ -26,6 +26,8 @@ import React, { useEffect, useState } from "react";
 import { database } from '../firebase.config';
 import { ref, get, child, onValue, remove, set, update } from "firebase/database";
 import { Pencil, Trash } from "lucide-react";
+import {toast, ToastContainer} from 'react-toastify'
+import Swal from "sweetalert2";
 
 
 
@@ -37,10 +39,21 @@ const handleDelete = async (user) => {
     console.error("Invalid user data");
     return;
   }
+  
+  const confirmAction = await Swal.fire({
+    title: `Are you sure you want to Delete ${user.Name}?`,
+    text: "This cannot be undone.",
+    icon: '',
+    confirmButtonText: 'Yes',
+    showCancelButton: true,
+    customClass:{
+      confirmButton: "confirm-button",
+      cancelButton: "cancel-button"
+    }
+  })
 
-    // Show confirmation alert before deleting
-    const confirmDelete = window.confirm(`Are you sure you want to delete ${user.Name}?`);
-    if (!confirmDelete) return; // Stop if user cancels
+if (!confirmAction.isConfirmed) return;
+  
 
   const usersRef = ref(database, "users");
 
@@ -77,7 +90,7 @@ const handleDelete = async (user) => {
     await remove(ref(database, `users/${userKey}`));
 
     console.log(`User ${user.CustomUserId} has been deleted.`);
-    alert(`User ${user.Name} has been deleted.`);
+    toast(`User ${user.Name} has been deleted.`);
   } catch (error) {
     console.error("Error deleting user:", error);
   }
@@ -132,6 +145,7 @@ const columns = [
     header: () => (
       <span className="flex items-center">
         <IdCard className="mr-2" size={18} /> UserID
+        <ArrowUpDown className="ml-2" size={14} />
       </span>
     ),
   }),
@@ -140,6 +154,7 @@ const columns = [
     header: () => (
       <span className="flex items-center">
         <Phone className="mr-2" size={16} /> Contact Number
+        <ArrowUpDown className="ml-2" size={14} />
       </span>
     ),
   }),
@@ -148,6 +163,7 @@ const columns = [
     header: () => (
       <span className="flex items-center">
         <User className="mr-2" size={16} /> Name
+        <ArrowUpDown className="ml-2" size={14} />
       </span>
     ),
   }),
@@ -156,6 +172,7 @@ const columns = [
     header: () => (
       <span className="flex items-center">
         <Mail className="mr-2" size={16} /> Email
+        <ArrowUpDown className="ml-2" size={14} />
       </span>
     ),
   }),
@@ -174,13 +191,14 @@ const columns = [
     header: () => (
       <span className="flex items-center">
         <ChartLine className="mr-2" size={16} /> Status
+        <ArrowUpDown className="ml-2" size={14} />
       </span>
     ),
   }),
 
   columnHelper.accessor("Action", {
     cell: (info) => (
-      <div className="flex space-x-2">  
+      <div className="space-x-2">  
         {/* <button
           onClick={() => handleEdit(info.row.original)}
           className="bg-green-600 text-white p-2 rounded-lg hover:bg-green-800 transition"
@@ -273,7 +291,7 @@ const columns = [
       <div className="p-7 border border-solid">
       <h2 className= "font-nobile text-[#1c2e8b] text-3xl font-medium"> Users Record</h2>
         </div>
-          <div className="flex flex-col min-h-full max-xl:-4xl py-12 px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col min-h-full max-xl:-4xl py-6 px-4 sm:px-6 lg:px-8">
                <div className="mb-4 relative">
                  <input
                    value={globalFilter ?? ""}
@@ -309,7 +327,7 @@ const columns = [
                                  header.column.columnDef.header,
                                  header.getContext()
                                )}
-                               <ArrowUpDown className="ml-2" size={14} />
+                            
                              </div>
                            </th>
                          ))}
@@ -486,7 +504,7 @@ const columns = [
               
          
              </div>
-             
+             <ToastContainer position="top-center"/>
             </>
     
       
